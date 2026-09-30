@@ -1,0 +1,3136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>大永劫 · 开始</title>
+<meta name="description" content="一个只帮你做一件事的软件：坐下来，开始">
+<meta name="theme-color" content="#2E7D32">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="开始">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232E7D32'/%3E%3Ctext x='16' y='23' font-size='19' text-anchor='middle' fill='%23fff'%3E%E5%8A%AB%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.json">
+<style>
+/* 大永劫 · 视觉规范：白底、绿阶、少装饰、行动优先 */
+
+:root{
+  --bg:#FFFFFF;
+  --soft:#F6F8F7;
+  --line:#E6EAE7;
+  --line2:#D3DAD6;
+
+  --ink:#1E2420;
+  --ink2:#5C6862;
+  --ink3:#939E98;
+
+  --g0:#EDF0EE;
+  --g1:#C8E6C9;
+  --g2:#81C784;
+  --g3:#2E7D32;
+  --g4:#1B5E20;
+
+  --warn:#B26A00;
+  --warn-bg:#FFF9EC;
+  --warn-line:#F0DCB0;
+  --danger:#C62828;
+  --danger-bg:#FDF0EF;
+  --danger-line:#F0CBC7;
+
+  --r:12px;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  padding-bottom:78px;
+  -webkit-font-smoothing:antialiased;
+}
+h3,h4{margin:0;font-weight:650}
+h3{font-size:16px}
+h4{font-size:14px;color:var(--ink2);margin:18px 0 8px;font-weight:600}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:none;padding:0}
+input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:700px;margin:0 auto;padding:14px 14px 20px}
+.center{text-align:center}
+.muted{color:var(--ink2);font-size:13.5px}
+.tiny{font-size:12.5px}
+.sp{flex:1}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row.tight{gap:6px}
+.grid{display:grid;gap:10px}
+.grid.c2{grid-template-columns:1fr 1fr}
+.grid.c3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:560px){.grid.c2{grid-template-columns:1fr}.grid.c3{grid-template-columns:1fr 1fr}}
+
+/* ---------- 顶栏 ---------- */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:700px;margin:0 auto;padding:9px 14px;display:flex;align-items:baseline;gap:10px}
+.brand{font-size:15px;font-weight:700;letter-spacing:.5px}
+.rank{font-size:13px;color:var(--g3);font-weight:600}
+.since{margin-left:auto;font-size:12.5px;color:var(--ink3)}
+
+/* ---------- 卡片 ---------- */
+.card{border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.card-head{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.card-head h3{flex:0 0 auto}
+.card-head .muted{margin-left:auto}
+.empty{color:var(--ink3);font-size:14px;text-align:center;padding:16px 8px;line-height:1.8}
+
+/* ---------- 提示条 ---------- */
+.alert{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:12px;font-size:14px;line-height:1.7}
+.alert.info{background:var(--soft)}
+.alert.warn{background:var(--warn-bg);border-color:var(--warn-line)}
+.alert-acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.alert .btn{margin-left:8px}
+
+/* ---------- 按钮 ---------- */
+.btn{border:1px solid var(--line2);background:#fff;border-radius:9px;padding:9px 14px;font-size:14.5px;transition:.12s;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn svg{width:16px;height:16px;flex-shrink:0}
+.btn:hover{border-color:var(--g2);background:var(--soft)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--g3);border-color:var(--g3);color:#fff}
+.btn.primary:hover{background:var(--g4);border-color:var(--g4)}
+.btn.ghost{border-color:transparent;color:var(--ink2)}
+.btn.ghost:hover{background:var(--soft)}
+.btn.danger{border-color:var(--danger-line);color:var(--danger)}
+.btn.danger:hover{background:var(--danger-bg)}
+.btn.sm{padding:5px 10px;font-size:13px;border-radius:7px}
+.btn.wide{width:100%;padding:13px;font-size:15px}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+
+/* ---------- 主行动区 ---------- */
+.hero{text-align:center;padding:22px 16px}
+.hero-label{font-size:14px;color:var(--ink2);margin-bottom:12px}
+.start-btn{
+  display:block;width:100%;background:var(--g3);color:#fff;border-radius:16px;
+  padding:26px 16px;transition:.14s;margin-bottom:14px;
+}
+.start-btn:hover{background:var(--g4)}
+.start-btn:active{transform:scale(.985)}
+.start-min{display:block;font-size:34px;font-weight:750;letter-spacing:1px;line-height:1.15}
+.start-what{display:block;font-size:15px;opacity:.9;margin-top:4px}
+.hero-acts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hero-note{margin-top:14px;font-size:12.5px;color:var(--ink3)}
+.timer{font-variant-numeric:tabular-nums;font-size:52px;font-weight:750;letter-spacing:2px;color:var(--g3);margin:6px 0 16px}
+.timer.over{color:var(--danger)}
+.count-big{font-variant-numeric:tabular-nums;font-size:60px;font-weight:800;letter-spacing:3px;color:var(--warn);margin:6px 0 16px}
+.blink{animation:bk 1s steps(2,start) infinite}
+@keyframes bk{to{color:transparent}}
+
+/* ---------- 三个数字 ---------- */
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.num b{display:block;font-size:26px;font-weight:700;color:var(--g3);line-height:1.25}
+.num span{display:block;font-size:12.5px;color:var(--ink2);margin-top:2px}
+.delta{text-align:center;font-size:13px;color:var(--ink2);margin-top:12px}
+
+/* ---------- 待办清单 ---------- */
+.checklist{margin-top:4px}
+.checkline{display:flex;align-items:flex-start;gap:11px;width:100%;text-align:left;padding:11px 4px;border-bottom:1px solid var(--line);transition:.1s}
+.checkline:last-child{border-bottom:none}
+.checkline:hover{background:var(--soft)}
+.checkline .mark{font-size:17px;line-height:1.4;width:20px;flex-shrink:0;text-align:center;color:var(--ink3)}
+.checkline.ok .mark{color:var(--g3)}
+.checkline.no .mark{color:var(--danger)}
+.checkline .body{flex:1;min-width:0}
+.checkline .name{display:block;font-size:15px}
+.checkline.no .name{color:var(--danger)}
+.checkline .sub{display:block;font-size:12.5px;color:var(--ink3);margin-top:1px}
+.checkline.todo .name{color:var(--ink2)}
+
+/* ---------- 国策树 ---------- */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-size:14px;white-space:nowrap;flex-shrink:0;color:var(--ink2)}
+.tab.on{background:var(--g3);border-color:var(--g3);color:#fff}
+.tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--danger);margin-left:6px;vertical-align:middle}
+.nrow{display:flex;align-items:flex-start;gap:10px;padding:11px 2px;border-bottom:1px solid var(--line)}
+.nrow:last-child{border-bottom:none}
+.nrow .body{flex:1;min-width:0}
+.nrow .nm{display:block;font-size:15px;font-weight:600}
+.nrow .sub{display:block;font-size:12.5px;color:var(--ink2);margin-top:2px;line-height:1.5}
+.nrow .acts{display:flex;gap:5px;flex-shrink:0}
+.nrow.off .nm{color:var(--danger)}
+.nrow.off .mark-btn{color:var(--danger)}
+.nrow.done .nm{color:var(--g3)}
+.mark-btn{width:24px;height:24px;flex-shrink:0;font-size:15px;color:var(--ink3);border-radius:6px}
+.mark-btn:hover{background:var(--soft)}
+.nrow.on .mark-btn{color:var(--g3)}
+.kids{margin-left:22px;border-left:1px solid var(--line);padding-left:12px}
+.tag{display:inline-block;font-size:12px;border:1px solid var(--line2);border-radius:999px;padding:1px 9px;color:var(--ink2);background:#fff;white-space:nowrap}
+.tag.warn{border-color:var(--danger-line);color:var(--danger);background:var(--danger-bg)}
+
+/* ---------- 折叠区 ---------- */
+.fold{border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.fold>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;gap:10px;align-items:baseline;font-size:16px;font-weight:650}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary .muted{margin-left:auto;font-weight:400}
+.fold>summary::before{content:"+";color:var(--ink3);font-weight:400}
+.fold[open]>summary::before{content:"−"}
+.fold-body{padding:0 16px 16px}
+
+/* ---------- 列表 ---------- */
+.list{margin-top:8px}
+.li{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.li:last-child{border-bottom:none}
+.li .nm{font-weight:500}
+.li .muted{margin-left:auto;text-align:right}
+.li.got .nm{color:var(--g3)}
+
+/* ---------- 记录明细 ---------- */
+.logline{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.logline:last-child{border-bottom:none}
+.logline .mark{font-size:15px;width:18px;flex-shrink:0;text-align:center;color:var(--ink3)}
+.logline .mark.ok{color:var(--g3)}
+.logline .mark.no{color:var(--danger)}
+.logline .body{flex:1;min-width:0}
+.logline .nm{display:block;font-size:14.5px;font-weight:600}
+.logline .sub{display:block;font-size:12.5px;color:var(--ink2)}
+.logline .dur{font-size:14px;font-weight:650;color:var(--g3);flex-shrink:0}
+.subhead{font-size:13px;color:var(--ink3);margin:16px 0 2px;border-top:1px solid var(--line);padding-top:12px}
+
+/* ---------- 进度 ---------- */
+.goal{margin-bottom:14px}
+.goal .bar{margin:6px 0 3px}
+.bar{height:8px;border-radius:5px;background:var(--g0);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--g3);border-radius:5px;transition:width .3s}
+
+/* ---------- 热力图 ---------- */
+.heat-wrap{overflow-x:auto;padding-bottom:4px}
+.heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px;min-width:max-content}
+.heat .cell{width:15px;height:15px;border-radius:3px;background:var(--g0);position:relative;cursor:pointer}
+.heat .cell.lv1{background:var(--g1)}.heat .cell.lv2{background:var(--g2)}
+.heat .cell.lv3{background:var(--g3)}.heat .cell.lv4{background:var(--g4)}
+.heat .cell.pol{box-shadow:inset 0 0 0 2px #F9A825}
+.heat .cell.pol::after{content:"";position:absolute;right:-1px;top:-1px;width:5px;height:5px;border-radius:50%;background:var(--warn);border:1px solid #fff}
+.heat .cell.today{outline:1.5px solid var(--ink);outline-offset:1px}
+.month{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.mcell{border-radius:9px;min-height:54px;display:flex;flex-direction:column;align-items:center;padding:7px 2px;background:var(--g0);cursor:pointer;position:relative;border:1px solid transparent}
+.mcell:hover{border-color:var(--ink3)}
+.mcell .dn{font-size:12.5px;font-weight:600}
+.mcell .mn{font-size:10.5px;opacity:.85;margin-top:2px}
+.mcell.lv1{background:var(--g1)}.mcell.lv2{background:var(--g2)}
+.mcell.lv3{background:var(--g3);color:#fff}.mcell.lv4{background:var(--g4);color:#fff}
+.mcell.pol{box-shadow:inset 0 0 0 2px #F9A825}
+.mcell.pol::after{content:"";position:absolute;right:4px;top:4px;width:6px;height:6px;border-radius:50%;background:var(--warn)}
+.mcell.today{outline:2px solid var(--ink);outline-offset:1px}
+.mcell.blank{background:transparent;cursor:default;min-height:0}
+.dow{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;font-size:12px;color:var(--ink3);text-align:center;margin-bottom:6px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);margin-top:14px;align-items:center}
+.legend .sw{display:inline-block;width:13px;height:13px;border-radius:3px;vertical-align:-2px;margin-right:5px}
+.legend .swpol{background:var(--g0);box-shadow:inset 0 0 0 2px #F9A825}
+
+/* ---------- 饼图 ---------- */
+.pie-wrap{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.pie{width:140px;height:140px;border-radius:50%;flex-shrink:0;position:relative}
+.pie::after{content:"";position:absolute;inset:28%;background:#fff;border-radius:50%}
+.pie-legend{flex:1;min-width:170px}
+.pie-legend .li{display:flex;align-items:center;gap:8px;border:none;padding:4px 0}
+.pie-legend .dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+
+/* ---------- 选择弹窗 ---------- */
+.pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pick{border:1px solid var(--line2);border-radius:10px;padding:12px;text-align:left;transition:.12s}
+.pick:hover{border-color:var(--g2);background:var(--soft)}
+.pick.on{border-color:var(--g3);background:#F4FBF5}
+.pick b{display:block;font-size:14.5px}
+.pick span{display:block;font-size:12px;color:var(--ink3)}
+.pick i{display:block;font-size:12px;color:var(--ink2);font-style:normal;margin-top:4px}
+
+/* ---------- 弹窗 ---------- */
+.mask{position:fixed;inset:0;background:rgba(20,30,24,.42);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:88vh;overflow:auto;padding:20px;box-shadow:0 18px 50px rgba(0,0,0,.2)}
+.modal h2{font-size:18px;margin:0 0 8px;font-weight:700}
+.modal p{font-size:14px;margin-bottom:8px}
+.modal .foot{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;color:var(--ink2);margin-bottom:5px}
+.field input[type=text],.field input[type=number],.field input[type=date],.field select,.field textarea{
+  width:100%;padding:9px 11px;border:1px solid var(--line2);border-radius:9px;background:#fff}
+.field .hint{font-size:12px;color:var(--ink3);margin-top:4px}
+.field label input[type=checkbox]{margin-right:6px}
+
+/* ---------- 底部导航 ---------- */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.nav-in{max-width:700px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.nav button{padding:14px 4px;font-size:15px;color:var(--ink3)}
+.nav button.on{color:var(--g3);font-weight:650}
+
+/* ---------- 提示 ---------- */
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);z-index:80;background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1;bottom:100px}
+
+/* ==========================================================
+   数据统计
+   ========================================================== */
+
+/* 2×2 数据卡（圆形图标 + 标签 + 大数字） */
+.statcards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.statcard{border:1px solid var(--line);border-radius:var(--r);padding:13px 12px;display:flex;gap:10px;align-items:center;min-width:0}
+.statcard .icw{width:34px;height:34px;border-radius:50%;background:#EAF5EB;color:var(--g3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.statcard .icw svg{width:18px;height:18px}
+.statcard .tx{min-width:0}
+.statcard .k{display:block;font-size:12.5px;color:var(--ink2);line-height:1.35}
+.statcard .v{display:block;font-size:17px;font-weight:750;color:var(--ink);margin-top:2px;line-height:1.2}
+.statcard .v i{font-style:normal;font-size:12px;font-weight:500;color:var(--ink2);margin:0 1px}
+
+/* 多月热力图 */
+.months{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.mon .mh{font-size:12.5px;color:var(--ink2);margin-bottom:5px}
+.dow7{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:9.5px;color:var(--ink3);text-align:center;margin-bottom:3px}
+.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.mc{aspect-ratio:1/1;border-radius:4px;background:var(--g0);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--ink3);cursor:pointer;position:relative;transition:.1s}
+.mc:hover{outline:1px solid var(--ink3)}
+.mc.lv1{background:var(--g1);color:#3A5A3C}
+.mc.lv2{background:var(--g2);color:#1F3B21}
+.mc.lv3{background:var(--g3);color:#fff}
+.mc.lv4{background:var(--g4);color:#fff}
+.mc.pol{box-shadow:inset 0 0 0 1.5px #F9A825}
+.mc.today{outline:1.5px solid var(--ink);outline-offset:1px}
+.mc.blank{background:transparent;cursor:default}
+
+/* 大格子月历（热力图详情） */
+.bigcal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.bc{border-radius:10px;min-height:56px;padding:8px 2px 6px;display:flex;flex-direction:column;align-items:center;background:var(--g0);cursor:pointer;position:relative;border:1px solid transparent;transition:.1s}
+.bc:hover{border-color:var(--ink3)}
+.bc .n{font-size:15px;font-weight:650;line-height:1.15}
+.bc .t{font-size:10.5px;opacity:.8;margin-top:2px;font-variant-numeric:tabular-nums}
+.bc.lv1{background:var(--g1)}.bc.lv2{background:var(--g2)}
+.bc.lv3{background:var(--g3);color:#fff}.bc.lv4{background:var(--g4);color:#fff}
+.bc.pol{box-shadow:inset 0 0 0 2px #F9A825}
+.bc.pol::after{content:"";position:absolute;right:4px;top:4px;width:6px;height:6px;border-radius:50%;background:var(--warn)}
+.bc.today{outline:2px solid var(--ink);outline-offset:1px}
+.bc.sel{border-color:var(--g3)}
+.bc.blank{background:transparent;cursor:default;min-height:0}
+
+/* 当日的明细行：勾 / 时间 / 任务 / 时长 */
+.daylist{margin-top:4px}
+.drow{display:grid;grid-template-columns:26px 56px 1fr auto;gap:10px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line)}
+.drow:last-child{border-bottom:none}
+.drow .ck{display:flex;align-items:center}
+.drow .ck svg{width:20px;height:20px;color:var(--g3)}
+.drow.no .ck svg{color:var(--danger)}
+.drow .tm{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+.drow .nm{display:block;font-size:15px;font-weight:600;line-height:1.3}
+.drow .no{display:block;font-size:12.5px;color:var(--ink3);margin-top:1px}
+.drow .rt{text-align:right}
+.drow .du{display:block;font-size:15px;font-weight:750;font-variant-numeric:tabular-nums}
+.drow .st{display:block;font-size:12.5px;color:var(--ink3)}
+
+/* 区间切换 */
+.segrow{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.seg{display:flex;border:1px solid var(--line2);border-radius:9px;overflow:hidden;margin-left:auto}
+.seg button{padding:6px 12px;font-size:13.5px;color:var(--ink2);border-left:1px solid var(--line2);background:#fff}
+.seg button:first-child{border-left:none}
+.seg button.on{background:#EAF5EB;color:var(--g3);font-weight:650}
+.rangelabel{font-size:13.5px;color:var(--ink2);text-align:center;margin:2px 0 4px}
+.rangebig{font-size:14.5px;text-align:center;margin-bottom:14px}
+.rangebig b{color:var(--g3)}
+
+/* 环形图 */
+.donut{display:block;width:100%;height:auto;max-width:420px;margin:0 auto}
+.donut text{font-family:inherit}
+.donut .lb-name{font-size:12px;fill:var(--ink);font-weight:600}
+.donut .lb-val{font-size:11px;fill:var(--ink2)}
+.donut .ldr{stroke:var(--line2);stroke-width:1;fill:none}
+
+/* 目标进度卡（双色条：浅色=上期，深色=本期的增量） */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.pgrid{grid-template-columns:1fr}}
+.pcard{display:flex;gap:10px;border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.pcard .pic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pcard .pic svg{width:17px;height:17px}
+.pcard .pbody{flex:1;min-width:0}
+.pcard .ptop{display:flex;align-items:baseline;gap:8px}
+.pcard .ptop b{font-size:14px}
+.pcard .pd{margin-left:auto;font-size:12.5px;font-weight:650;color:var(--g3);white-space:nowrap}
+.pcard .pd.down{color:var(--danger)}
+.pcard .pc{font-size:13px;color:var(--ink2);margin:5px 0 6px;font-variant-numeric:tabular-nums}
+.pcard .pc b{color:var(--g3)}
+.pbar{position:relative;height:8px;border-radius:5px;background:var(--g0);overflow:hidden}
+.pbar i{position:absolute;top:0;bottom:0;display:block}
+.pbar .base{background:var(--g2)}
+.pbar .grow{background:var(--g3)}
+.pbar .shrink{background:#E8A9A4}
+
+/* ==========================================================
+   我的
+   ========================================================== */
+.prof{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.avatar{width:54px;height:54px;border-radius:50%;background:var(--g3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0}
+.prof .pn{font-size:18px;font-weight:700}
+.prof .ps{font-size:13px;color:var(--ink2);margin-top:2px}
+.prof .prow{display:flex;gap:20px;margin-top:9px}
+.prof .prow b{display:block;font-size:16px;color:var(--g3)}
+.prof .prow span{font-size:12px;color:var(--ink2)}
+
+.achv{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.achv .a{border:1px solid var(--line);border-radius:10px;padding:11px 6px;text-align:center}
+.achv .a.got{border-color:var(--g2);background:#F4FBF5}
+.achv .a .ai{color:var(--ink3)}
+.achv .a.got .ai{color:var(--g3)}
+.achv .a .ai svg{width:20px;height:20px}
+.achv .a .t{font-size:12.5px;font-weight:600;margin-top:5px}
+.achv .a .h{font-size:11px;color:var(--ink3);margin-top:2px;line-height:1.35}
+
+.rankbar{margin-bottom:12px}
+.rankbar .rb-top{display:flex;align-items:baseline;gap:8px;margin-bottom:7px}
+.rankbar .rb-top b{font-size:15px}
+.map{display:flex;gap:2px;margin-top:8px}
+.map i{flex:1;height:5px;border-radius:3px;background:var(--g0)}
+.map i.on{background:var(--g3)}
+
+
+</style>
+</head>
+<body>
+<div id="topbar"></div>
+<div class="wrap" id="view"></div>
+<div class="nav" id="nav"></div>
+<div id="modal-root"></div>
+<div id="toast" class="toast"></div>
+
+<script>
+/* ============================================================
+ * 大永劫 · 规则引擎 Rules
+ * 纯函数 / 不依赖 DOM，可在 Node 中回放长周期测试
+ *
+ * 设计原则（V2 修正）：
+ *   1. 王国只是外壳，唯一要练的是「能不能坐下来开始」。
+ *   2. 正反馈纯粹：专注分钟数 = 进度，永不折扣、永不扣除。
+ *   3. 惩罚只保留结构代价（链条断、节点上锁、需重点亮）+ 状态提示，
+ *      不再扣经验、不再降军衔 —— 崩塌是调试器，不是罚款。
+ *   4. 指标收敛：累计分钟 / 启动次数 / 连续天数 / 链条。其余皆为提示。
+ * ============================================================ */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.DYJ_Rules = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  var CFG = {
+    DAY_BOUNDARY_HOUR: 4,      // 逻辑日分界
+    SETTLEMENT_HOUR: 23,       // 主结算
+    RESERVATION_SECONDS: 870,  // 14:30
+    INTERNALIZE_MAX: 100,
+    RECOVERY_DAYS: 7,          // 重建期长度
+    RECOVERY_TRIGGER_GAP: 3,   // 断档几天后回归进入重建期
+    MIN_START_MINUTES: 5       // 最小启动
+  };
+
+  /* ---------------- 时间 / 逻辑日 ---------------- */
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function logicalDay(ts, boundaryHour) {
+    var b = (boundaryHour == null ? CFG.DAY_BOUNDARY_HOUR : boundaryHour);
+    var d = new Date(ts - b * 3600000);
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+  function dayStartTs(day, hour) {
+    var p = day.split('-').map(Number);
+    return new Date(p[0], p[1] - 1, p[2], hour || 0, 0, 0, 0).getTime();
+  }
+  function dayEndTs(day, boundaryHour) { return dayStartTs(day, 0) + 86400000; }
+  function addDays(day, n) {
+    var t = dayStartTs(day, 0) + n * 86400000;
+    var d = new Date(t);
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+  function daysBetween(a, b) { return Math.round((dayStartTs(b, 0) - dayStartTs(a, 0)) / 86400000); }
+  function todayKey(state, now) {
+    return logicalDay(now == null ? Date.now() : now, state.settings.dayBoundaryHour);
+  }
+  function hhmm(ts) {
+    var d = new Date(ts);
+    return pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+  function monthKey(day) { return day.slice(0, 7); }
+
+  /* ---------------- 格式化 ---------------- */
+
+  function fmtMinutes(m) {
+    m = Math.round(m || 0);
+    if (m < 60) return m + ' 分钟';
+    var h = Math.floor(m / 60), r = m % 60;
+    return h + ' 小时' + (r ? ' ' + r + ' 分钟' : '');
+  }
+  function fmtCompact(m) {
+    m = Math.round(m || 0);
+    if (m < 60) return m + 'm';
+    var h = Math.floor(m / 60), r = m % 60;
+    return h + 'h' + (r ? r + 'm' : '');
+  }
+  function fmtHours(m) { return (Math.round(m / 6) / 10).toFixed(1) + 'h'; }
+
+  /* ---------------- 军衔（V2：早期密集，让第一天就有台阶） ---------------- */
+
+  var RANKS = [
+    { id: 'xuanjia_jiezu', name: '玄甲劫卒', min: 0, note: '立国' },
+    { id: 'wuzhang', name: '伍长', min: 60, note: '累计 1 小时' },
+    { id: 'shijie_zhang', name: '十劫长', min: 180, note: '累计 3 小时' },
+    { id: 'baijie_zhang', name: '百劫长', min: 360, note: '累计 6 小时' },
+    { id: 'podishi_ma', name: '破敌司马', min: 600, note: '累计 10 小时' },
+    { id: 'xianzhen_duwei', name: '陷阵都尉', min: 1200, note: '累计 20 小时' },
+    { id: 'liedi_xiaowei', name: '裂地校尉', min: 2100, note: '累计 35 小时' },
+    { id: 'pozhen_zhonglangjiang', name: '破阵中郎将', min: 3600, note: '累计 60 小时' },
+    { id: 'cuicheng_jiangjun', name: '摧城将军', min: 6000, note: '累计 100 小时' },
+    { id: 'bengxing_shangjiangjun', name: '崩星上将军', min: 12000, note: '累计 200 小时' },
+    { id: 'tongtian_jieshuai', name: '通天劫帅', min: 24000, note: '累计 400 小时' },
+    { id: 'jiezhu', name: '劫主', min: 48000, note: '累计 800 小时' }
+  ];
+
+  function rankIndexForMinutes(m) {
+    var i = 0;
+    for (var k = 0; k < RANKS.length; k++) if (m >= RANKS[k].min) i = k;
+    return i;
+  }
+  function rankForMinutes(m) { return RANKS[rankIndexForMinutes(m)]; }
+  function rankById(id) {
+    for (var i = 0; i < RANKS.length; i++) if (RANKS[i].id === id) return RANKS[i];
+    return RANKS[0];
+  }
+  function nextRank(m) {
+    var i = rankIndexForMinutes(m);
+    return i >= RANKS.length - 1 ? null : RANKS[i + 1];
+  }
+  function rankProgress(m) {
+    var i = rankIndexForMinutes(m), cur = RANKS[i], nx = RANKS[i + 1];
+    if (!nx) return { cur: cur, next: null, pct: 100, remain: 0 };
+    var pct = Math.max(2, Math.round((m - cur.min) / (nx.min - cur.min) * 100));
+    return { cur: cur, next: nx, pct: pct, remain: nx.min - m };
+  }
+
+  /* ---------------- 兵种：功能名为先，世界观为副 ---------------- */
+
+  var TROOP_LEVELS = [
+    { name: '新兵', min: 0 },
+    { name: '老兵', min: 600 },
+    { name: '精锐', min: 3000 },
+    { name: '王牌', min: 9000 },
+    { name: '传奇', min: 24000 }
+  ];
+  function troopLevelIndex(minutes) {
+    var i = 0;
+    for (var k = 0; k < TROOP_LEVELS.length; k++) if (minutes >= TROOP_LEVELS[k].min) i = k;
+    return i;
+  }
+  function troopLevel(minutes) { return TROOP_LEVELS[troopLevelIndex(minutes)]; }
+  function nextTroopLevel(minutes) {
+    var i = troopLevelIndex(minutes);
+    return i >= TROOP_LEVELS.length - 1 ? null : TROOP_LEVELS[i + 1];
+  }
+
+  /* label = 功能名（点开就是干这个），title = 世界观名 */
+  var DEFAULT_TROOPS = [
+    { id: 'zuoye', label: '写作业 / 编程', title: '锻星卒', hint: '输出型：作业、实验报告、代码、数据处理' },
+    { id: 'fuxi', label: '复习 / 刷题', title: '劫火死士', hint: '高强度攻坚：复习、刷题、背诵、冲刺' },
+    { id: 'shangke', label: '上课 / 看网课', title: '玄甲劫卒', hint: '输入型：上课、讲座、网课' },
+    { id: 'yuedu', label: '阅读 / 写作', title: '噬影卫', hint: '深度消化：读书、写总结、整理笔记' },
+    { id: 'ziliao', label: '查资料', title: '踏星骑', hint: '信息搜集：找论文、搜方法、整理来源' },
+    { id: 'yundong', label: '运动', title: '裂地卒', hint: '身体执行：锻炼、体力任务' },
+    { id: 'jingrui', label: '最难的那件事', title: '凌霄铁卫', hint: '最重要、最难、最不想开始的任务', locked: true }
+  ];
+  /* 旧 id 兼容映射（旧存档里的兵种 id） */
+  var TROOP_ALIAS = {
+    duanxingzu: 'zuoye', jiehuo_shisi: 'fuxi', xuanjia_jiezu: 'shangke',
+    shiyingwei: 'yuedu', taxingqi: 'ziliao', liedizu: 'yundong',
+    lingxiao_tiewei: 'jingrui'
+  };
+
+  var NODE_TYPES = {
+    passive: { name: '被动型', rate: 3, desc: '特定条件下不做某事，几乎不需要决策' },
+    semi: { name: '半被动型', rate: 2, desc: '挂靠在每天必然发生的动作上' },
+    active: { name: '主动型', rate: 1, desc: '要主动投入，决策负担最高，宜少用' }
+  };
+  var NODE_TYPE_ORDER = ['passive', 'semi', 'active'];
+
+  var DEFAULT_GROUPS = [
+    { id: 'zuoxi', name: '作息', title: '司晨殿', scope: { mode: 'global', weight: 0.5 } },
+    { id: 'yinshi', name: '饮食', title: '噬星御膳房', scope: { mode: 'global', weight: 0.5 } },
+    { id: 'shenti', name: '身体', title: '劫生锻体署', scope: { mode: 'troops', troopIds: ['yundong'], weight: 1 } },
+    { id: 'yuedu_g', name: '阅读', title: '万劫典阁', scope: { mode: 'troops', troopIds: ['zuoye', 'fuxi', 'shangke', 'yuedu', 'ziliao'], weight: 1 } },
+    { id: 'yuanze', name: '原则', title: '归墟祭坛', scope: { mode: 'none', weight: 0 }, noCollapse: true }
+  ];
+  /* 旧组 id 兼容 */
+  var GROUP_ALIAS = { sichen: 'zuoxi', yundong: 'shenti', yuedu: 'yuedu_g', jitan: 'yuanze' };
+
+  /* 起步建议：全部可随时改删。刻意只给少量、低难度的条目。 */
+  var SUGGESTED_NODES = [
+    { groupId: 'zuoxi', name: '起床后 30 分钟内不刷娱乐 App', type: 'semi', trigger: '起床' },
+    { groupId: 'zuoxi', name: '23:30 后手机放在客厅充电', type: 'semi', trigger: '23:30' },
+    { groupId: 'shenti', name: '进家门 15 分钟内换运动服', type: 'semi', trigger: '进家门' },
+    { groupId: 'yinshi', name: '在家吃完饭立刻洗碗', type: 'semi', trigger: '吃完饭' },
+    { groupId: 'yuedu_g', name: '每天读一页书', type: 'active' },
+    { groupId: 'yuanze', name: '早上起床先打开这个应用', type: 'semi', trigger: '起床', isRoot: true }
+  ];
+
+  /* ---------------- 初始化 ---------------- */
+
+  function uid(prefix) {
+    return (prefix || 'id') + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  }
+
+  function defaultState(now) {
+    now = now == null ? Date.now() : now;
+    var today = logicalDay(now, CFG.DAY_BOUNDARY_HOUR);
+    var s = {
+      schemaVersion: 2,
+      kingdom: {
+        name: '大永劫', emperorTitle: '我',
+        lifetimeFocusMinutes: 0,
+        totalSessions: 0,
+        attempts: 0,
+        focusStreak: 0, bestFocusStreak: 0, lastFocusDay: null,
+        rankId: 'xuanjia_jiezu', highestRankId: 'xuanjia_jiezu',
+        honors: [], recoveryUntil: null, recoveryReason: null,
+        chainNo: 0, chainBest: 0,
+        createdAt: now
+      },
+      settings: {
+        dayBoundaryHour: CFG.DAY_BOUNDARY_HOUR,
+        settlementHour: CFG.SETTLEMENT_HOUR,
+        reservationWindowSeconds: CFG.RESERVATION_SECONDS,
+        newbieProtectionUntil: addDays(today, 30),
+        entertainmentQuotaMinutes: 120,
+        downgradePerDayLimit: 2,
+        planPresets: [5, 10, 25, 45],
+        defaultPlanMinutes: 10,
+        lastTroopId: 'zuoye',
+        lastTaskName: '',
+        showTitles: true,
+        heatmapMode: 'adaptive'
+      },
+      meta: { cursorDay: today, lastSeenAt: now, lastExportAt: null, onboarded: false },
+      runtime: {},
+      troops: DEFAULT_TROOPS.map(function (t) {
+        return {
+          id: t.id, label: t.label, title: t.title, hint: t.hint, locked: !!t.locked,
+          focusMinutes: 0, sessions: 0, fatigue: false, consecutiveAborts: 0
+        };
+      }),
+      targets: [
+        { id: 't_study', name: '课业与考试', troopIds: ['zuoye', 'fuxi', 'shangke'], monthlyGoalMinutes: 1800, color: '#E5533D' },
+        { id: 't_read', name: '阅读与信息', troopIds: ['yuedu', 'ziliao'], monthlyGoalMinutes: 600, color: '#2F9E63' },
+        { id: 't_body', name: '身体', troopIds: ['yundong'], monthlyGoalMinutes: 300, color: '#3B82C4' },
+        { id: 't_other', name: '日常事务', troopIds: [], monthlyGoalMinutes: 300, color: '#F2A63B' }
+      ],
+      policyGroups: DEFAULT_GROUPS.map(function (g) {
+        return {
+          id: g.id, name: g.name, title: g.title,
+          scope: JSON.parse(JSON.stringify(g.scope)),
+          noCollapse: !!g.noCollapse,
+          tolerance: 1, state: 'stable', locked: false,
+          shakenDays: 0, cleanDays: 0, frozenUntil: null, frozenReason: null
+        };
+      }),
+      policyNodes: [],
+      focusLogs: [], reservations: [], rulings: [], permits: [],
+      dayRecords: {}, settlements: [], quotaLogs: [], audit: []
+    };
+
+    SUGGESTED_NODES.forEach(function (n) {
+      s.policyNodes.push({
+        id: uid('n'), groupId: n.groupId, parentId: null, name: n.name, type: n.type,
+        trigger: n.trigger || '', isRoot: !!n.isRoot, note: '',
+        status: 'lit',
+        createdAt: now, trialEndsAt: addDays(today, 3), trialFails: 0,
+        internalization: 0, streak: 0, bestStreak: 0, totalLit: 0,
+        lastConfirmedDay: null, useCount: 0
+      });
+    });
+    return s;
+  }
+
+  function ensureDay(state, day) {
+    if (!state.dayRecords[day]) {
+      state.dayRecords[day] = {
+        day: day, confirms: {}, mainSettled: false, finalSettled: false,
+        groupStates: {}, focusMinutes: 0, sessions: 0, starts: 0,
+        entertainmentMinutes: 0, lateConfirms: [], report: null, settledAt: null
+      };
+    }
+    return state.dayRecords[day];
+  }
+
+  /* ---------------- 国策节点状态 ---------------- */
+
+  function activeNodesOf(state, groupId) {
+    return state.policyNodes.filter(function (n) {
+      return n.groupId === groupId && n.status !== 'removed' && n.status !== 'internalized' && n.status !== 'frozen';
+    });
+  }
+  function allNodesOf(state, groupId) {
+    return state.policyNodes.filter(function (n) { return n.groupId === groupId && n.status !== 'removed'; });
+  }
+  function toleranceFor(nodeCount) {
+    if (nodeCount <= 1) return 0;
+    return Math.min(1, nodeCount - 1);
+  }
+
+  /** 统一状态计算：视图层只用这一个函数判断节点当天状态。
+   *  必须与 settleDay 的判定完全一致：被动型 / 半被动型未确认 = 默认点亮，
+   *  只有主动型未确认才需要用户当天确认。试用是属性（用 inTrialOn 单独展示），不是状态。 */
+  function nodeStateFor(state, day, node) {
+    if (node.status === 'removed') return 'removed';
+    if (node.status === 'frozen') return 'frozen';
+    if (node.status === 'internalized') return 'internalized';
+    var rec = state.dayRecords[day];
+    var c = rec && rec.confirms ? rec.confirms[node.id] : null;
+    if (c === 'lit') return 'lit';
+    if (c === 'out') return 'out';
+    return node.type === 'active' ? 'pending' : 'lit';
+  }
+  function inTrialOn(node, day) {
+    return !!(node.trialEndsAt && day <= node.trialEndsAt);
+  }
+  /** 结算时会不会算作"做到"——清单打勾必须用这个，否则显示与结算不一致 */
+  function effectiveLit(state, day, node) {
+    if (node.status === 'removed') return false;
+    var rec = state.dayRecords[day];
+    var c = rec && rec.confirms ? rec.confirms[node.id] : null;
+    if (c === 'lit') return true;
+    if (c === 'out') return false;
+    return node.type !== 'active';
+  }
+
+  function mainSettleTs(state, day) { return dayStartTs(day, state.settings.settlementHour); }
+
+  function isNodeEditable(state, day, node, now) {
+    var today = todayKey(state, now);
+    if (day !== today) return false;
+    var rec = state.dayRecords[day];
+    if (!rec || !rec.mainSettled) return true;
+    return node.type === 'passive';
+  }
+
+  function confirmNode(state, day, nodeId, status, now) {
+    var node = state.policyNodes.find(function (n) { return n.id === nodeId; });
+    if (!node) return false;
+    if (!isNodeEditable(state, day, node, now)) return false;
+    var rec = ensureDay(state, day);
+    var before = rec.confirms[nodeId];
+    if (status == null) delete rec.confirms[nodeId];
+    else {
+      rec.confirms[nodeId] = status;
+      if (rec.mainSettled && before !== status) {
+        rec.lateConfirms.push({ nodeId: nodeId, at: now, from: before || null, to: status });
+      }
+    }
+    return true;
+  }
+
+  /** 一键：今天都做到了（只把尚未确认的标为做到；试用期节点同样可以确认，
+   *  试用只影响"失败时是否判崩塌"，不影响能否打勾） */
+  function confirmAll(state, day, now) {
+    var n = 0;
+    state.policyNodes.forEach(function (node) {
+      if (node.status === 'removed' || node.status === 'internalized' || node.status === 'frozen') return;
+      if (!isNodeEditable(state, day, node, now)) return;
+      var rec = ensureDay(state, day);
+      if (rec.confirms[node.id] !== 'lit') { rec.confirms[node.id] = 'lit'; n++; }
+    });
+    return n;
+  }
+
+  /** 今天真正需要留意的几件事：根国策 + 主动型 + 连续天数最短的 */
+  function focusNodes(state, day, limit) {
+    limit = limit || 3;
+    var arr = [];
+    state.policyGroups.forEach(function (g) {
+      activeNodesOf(state, g.id).forEach(function (n) {
+        arr.push({ node: n, group: g });
+      });
+    });
+    arr.sort(function (a, b) {
+      function score(x) {
+        var s = 0;
+        if (x.node.isRoot) s -= 100;
+        if (x.node.type === 'active') s -= 30;
+        if (x.node.trialEndsAt && day <= x.node.trialEndsAt) s -= 20;
+        s -= Math.min(20, (x.node.bestStreak || 0));
+        s -= Math.min(10, (x.node.internalization || 0) / 10);
+        return s;
+      }
+      return score(a) - score(b);
+    });
+    return arr.slice(0, limit);
+  }
+
+  /* ---------------- 状态提示（替代经验折扣） ---------------- */
+
+  function inNewbie(state, now) {
+    var until = state.settings.newbieProtectionUntil;
+    if (!until) return false;
+    return todayKey(state, now) <= until;
+  }
+  function inRecovery(state, now) {
+    return !!(state.kingdom.recoveryUntil && now < state.kingdom.recoveryUntil);
+  }
+
+  function statusSummary(state, now) {
+    var flags = [];
+    if (inRecovery(state, now)) {
+      flags.push({ level: 'info', text: '重建期：目标降到最低，先坐 5 分钟就够。' });
+    }
+    state.policyGroups.forEach(function (g) {
+      if (g.noCollapse || (g.frozenUntil && now < g.frozenUntil)) return;
+      if (g.state === 'broken') flags.push({ level: 'warn', groupId: g.id, text: g.name + ' 这一组已崩坏：拆小、冻结，或者先放着。' });
+      else if (g.state === 'shaken') flags.push({ level: 'info', groupId: g.id, text: g.name + ' 这一组在动摇。' });
+    });
+    state.troops.forEach(function (t) {
+      if (t.fatigue) flags.push({ level: 'info', text: t.label + ' 连续中断了几次，下次试试降级启动。' });
+    });
+    return flags;
+  }
+
+  /* ---------------- 兵营 ---------------- */
+
+  function troopById(state, id) {
+    id = TROOP_ALIAS[id] || id;
+    return state.troops.find(function (t) { return t.id === id; });
+  }
+  function troopLabel(state, id) {
+    var t = troopById(state, id);
+    return t ? t.label : id;
+  }
+
+  function startSession(state, troopId, plannedMinutes, targetId, now, taskName) {
+    now = now == null ? Date.now() : now;
+    troopId = TROOP_ALIAS[troopId] || troopId;
+    state.runtime = state.runtime || {};
+    if (state.runtime.activeSession) return null;
+    var day = todayKey(state, now);
+    var name = (taskName == null ? state.settings.lastTaskName : taskName) || '';
+    var s = {
+      id: uid('s'), logicalDay: day, startedAt: now, plannedMinutes: plannedMinutes,
+      troopId: troopId, targetId: targetId || null, degraded: false, taskName: name
+    };
+    state.runtime.activeSession = s;
+    state.settings.lastTroopId = troopId;
+    if (name) state.settings.lastTaskName = name;
+    state.kingdom.attempts = (state.kingdom.attempts || 0) + 1;
+    ensureDay(state, day).starts = (ensureDay(state, day).starts || 0) + 1;
+    return s;
+  }
+
+  function degradationUsedToday(state, now) {
+    var day = todayKey(state, now);
+    return state.focusLogs.filter(function (l) { return l.logicalDay === day && l.degraded; }).length;
+  }
+
+  function downgradeSession(state, newMinutes, now) {
+    var s = state.runtime && state.runtime.activeSession;
+    if (!s) return { ok: false, reason: '没有进行中的专注' };
+    if (degradationUsedToday(state, now) >= state.settings.downgradePerDayLimit) {
+      return { ok: false, reason: '今天已经降级 ' + state.settings.downgradePerDayLimit + ' 次了，直接开始也行。' };
+    }
+    if (newMinutes >= s.plannedMinutes) return { ok: false, reason: '降级后的时长要比原计划短' };
+    s.plannedMinutes = newMinutes;
+    s.degraded = true;
+    return { ok: true };
+  }
+
+  /**
+   * 结束专注。
+   * outcome: 'completed' | 'aborted'
+   * 核心：完成的分钟数 100% 计入进度，永久有效，任何情况下都不打折。
+   */
+  function endSession(state, outcome, now, overrideMinutes, taskName) {
+    now = now == null ? Date.now() : now;
+    var s = state.runtime && state.runtime.activeSession;
+    if (!s) return null;
+    if (taskName != null && String(taskName).trim()) {
+      s.taskName = String(taskName).trim();
+      state.settings.lastTaskName = s.taskName;
+    }
+    var elapsed = Math.max(1, Math.round((now - s.startedAt) / 60000));
+    var actual = outcome === 'completed'
+      ? (overrideMinutes != null ? overrideMinutes : elapsed)
+      : elapsed;
+    var troop = troopById(state, s.troopId);
+    var chainNo = state.kingdom.chainNo;
+
+    if (outcome === 'completed') {
+      chainNo = (state.kingdom.chainNo || 0) + 1;
+      state.kingdom.chainNo = chainNo;
+      state.kingdom.chainBest = Math.max(state.kingdom.chainBest || 0, chainNo);
+      state.kingdom.lifetimeFocusMinutes += actual;
+      state.kingdom.totalSessions += 1;
+      if (troop) {
+        troop.sessions += 1;
+        if (!s.plannedMinutes || actual >= s.plannedMinutes * 0.5) { troop.fatigue = false; troop.consecutiveAborts = 0; }
+      }
+      bumpStreak(state, s.logicalDay);
+    } else {
+      chainNo = 0;
+      state.kingdom.chainNo = 0;
+      if (troop) {
+        troop.consecutiveAborts = (troop.consecutiveAborts || 0) + 1;
+        if (troop.consecutiveAborts >= 3) troop.fatigue = true;
+      }
+    }
+    if (troop) troop.focusMinutes += actual;
+
+    var log = {
+      id: s.id, logicalDay: s.logicalDay, startedAt: s.startedAt, endedAt: now,
+      plannedMinutes: s.plannedMinutes, actualMinutes: actual,
+      troopId: s.troopId, targetId: s.targetId || null, taskName: s.taskName || '',
+      chainNo: chainNo, result: outcome, degraded: !!s.degraded
+    };
+    state.focusLogs.push(log);
+    var rec = ensureDay(state, s.logicalDay);
+    if (outcome === 'completed') { rec.sessions += 1; rec.focusMinutes += actual; }
+    state.runtime.activeSession = null;
+    return log;
+  }
+
+  function bumpStreak(state, day) {
+    var k = state.kingdom;
+    if (k.lastFocusDay === day) return;
+    k.focusStreak = (k.lastFocusDay && daysBetween(k.lastFocusDay, day) === 1) ? (k.focusStreak || 0) + 1 : 1;
+    k.lastFocusDay = day;
+    k.bestFocusStreak = Math.max(k.bestFocusStreak || 0, k.focusStreak);
+  }
+
+  /* ---------------- 预约链 ---------------- */
+
+  function makeReservation(state, signal, now) {
+    now = now == null ? Date.now() : now;
+    if (state.runtime && state.runtime.activeReservation) return null;
+    var r = {
+      id: uid('r'), logicalDay: todayKey(state, now), signal: signal || '响指',
+      madeAt: now, deadlineAt: now + state.settings.reservationWindowSeconds * 1000,
+      seatedAt: null, status: 'pending'
+    };
+    state.runtime = state.runtime || {};
+    state.runtime.activeReservation = r;
+    state.reservations.push(r);
+    return r;
+  }
+  function seatReservation(state, now) {
+    var r = state.runtime && state.runtime.activeReservation;
+    if (!r) return { ok: false, reason: '没有进行中的预约' };
+    now = now == null ? Date.now() : now;
+    r.seatedAt = now;
+    r.status = now <= r.deadlineAt ? 'seated' : 'seated_late';
+    state.runtime.activeReservation = null;
+    return { ok: true, late: r.status === 'seated_late' };
+  }
+  function lapseReservation(state, now) {
+    var r = state.runtime && state.runtime.activeReservation;
+    if (!r) return null;
+    r.status = 'lapsed';
+    r.lapsedAt = now == null ? Date.now() : now;
+    state.runtime.activeReservation = null;
+    return r;
+  }
+
+  /* ---------------- 下必为例 ---------------- */
+
+  function openRuling(state, kind, subject, now, affectedNodeIds) {
+    var r = {
+      id: uid('rul'), logicalDay: todayKey(state, now == null ? Date.now() : now),
+      at: now == null ? Date.now() : now, kind: kind, subject: subject,
+      decision: null, note: '', affectedNodeIds: affectedNodeIds || [], autoDefault: false, resolvedAt: null
+    };
+    state.rulings.push(r);
+    return r;
+  }
+  function resolveRuling(state, rulingId, decision, note, now) {
+    var r = state.rulings.find(function (x) { return x.id === rulingId; });
+    if (!r || r.decision) return null;
+    now = now == null ? Date.now() : now;
+    r.decision = decision; r.note = note || ''; r.resolvedAt = now;
+    if (decision === 'permitted') {
+      state.permits.push({ behavior: r.subject, grantedAt: now, rulingId: r.id });
+      state.kingdom.permitCount = state.permits.length;
+    } else {
+      (r.affectedNodeIds || []).forEach(function (id) {
+        var n = state.policyNodes.find(function (x) { return x.id === id; });
+        if (!n) return;
+        n.status = 'out';
+        n.internalization = Math.max(0, (n.internalization || 0) - 30);
+        n.streak = 0;
+        softDeleteSubtree(state, n.id);
+      });
+    }
+    return r;
+  }
+  function autoDefaultRulings(state, now) {
+    var out = [];
+    state.rulings.forEach(function (r) {
+      if (!r.decision && now - r.at > 86400000) {
+        r.autoDefault = true;
+        resolveRuling(state, r.id, 'reset', '超过 24 小时未裁定，按保守默认执行', now);
+        out.push(r);
+      }
+    });
+    return out;
+  }
+  function softDeleteSubtree(state, nodeId) {
+    state.policyNodes.forEach(function (n) {
+      if (n.parentId === nodeId && n.status !== 'removed') {
+        n.status = 'removed';
+        n.removedAt = Date.now();
+        softDeleteSubtree(state, n.id);
+      }
+    });
+  }
+
+  /* ---------------- 统计辅助 ---------------- */
+
+  function completedLogsOn(state, day) {
+    return state.focusLogs.filter(function (l) { return l.logicalDay === day && l.result === 'completed'; });
+  }
+  function dayMinutes(state, day) {
+    var r = state.dayRecords[day];
+    if (r && r.finalSettled) return r.focusMinutes;
+    return completedLogsOn(state, day).reduce(function (a, l) { return a + l.actualMinutes; }, 0);
+  }
+  function dayStarts(state, day) {
+    return state.focusLogs.filter(function (l) { return l.logicalDay === day; }).length;
+  }
+
+  function todaySummary(state, now) {
+    var day = todayKey(state, now);
+    var mins = dayMinutes(state, day);
+    var y = dayMinutes(state, addDays(day, -1));
+    return {
+      day: day,
+      minutes: mins,
+      yesterday: y,
+      delta: mins - y,
+      starts: dayStarts(state, day),
+      streak: (state.kingdom.lastFocusDay === day ? state.kingdom.focusStreak : 0),
+      chain: state.kingdom.chainNo || 0
+    };
+  }
+
+  function minuteLevel(minutes) {
+    if (!minutes) return 0;
+    if (minutes < 10) return 1;
+    if (minutes < 25) return 2;
+    if (minutes < 60) return 3;
+    return 4;
+  }
+  function adaptiveThresholds(state, today) {
+    var arr = [];
+    for (var i = 0; i < 30; i++) {
+      var m = dayMinutes(state, addDays(today, -i));
+      if (m > 0) arr.push(m);
+    }
+    if (arr.length < 5) return null;
+    arr.sort(function (a, b) { return a - b; });
+    function q(p) { return arr[Math.min(arr.length - 1, Math.floor(p * arr.length))]; }
+    var t = [q(0.25), q(0.5), q(0.75), q(0.9)];
+    if (t[3] <= t[2]) t[3] = t[2] + 1;
+    return t;
+  }
+  function levelWith(minutes, mode, thresholds) {
+    if (!minutes) return 0;
+    if (mode === 'adaptive' && thresholds) {
+      if (minutes <= thresholds[0]) return 1;
+      if (minutes <= thresholds[1]) return 2;
+      if (minutes <= thresholds[2]) return 3;
+      return 4;
+    }
+    return minuteLevel(minutes);
+  }
+  function targetMinutesInMonth(state, targetId, mk) {
+    return state.focusLogs.filter(function (l) {
+      return l.result === 'completed' && monthKey(l.logicalDay) === mk && l.targetId === targetId;
+    }).reduce(function (a, l) { return a + l.actualMinutes; }, 0);
+  }
+  function countLitNodes(state) {
+    return state.policyNodes.filter(function (n) { return n.status === 'lit' || n.status === 'internalized'; }).length;
+  }
+  function countNodes(state) {
+    return state.policyNodes.filter(function (n) { return n.status !== 'removed'; }).length;
+  }
+  function policyActivityOn(state, day) {
+    var rec = state.dayRecords[day];
+    var confirms = 0;
+    if (rec) {
+      Object.keys(rec.confirms).forEach(function (id) {
+        var n = state.policyNodes.find(function (x) { return x.id === id; });
+        if (n && n.type === 'active' && rec.confirms[id] === 'lit') confirms++;
+      });
+    }
+    var created = state.policyNodes.filter(function (n) {
+      return n.createdAt && logicalDay(n.createdAt, state.settings.dayBoundaryHour) === day && n.status !== 'removed';
+    }).length;
+    var rulings = state.rulings.filter(function (r) { return r.logicalDay === day; }).length;
+    return { count: confirms + created + rulings, confirms: confirms, created: created, rulings: rulings };
+  }
+
+  /* ---------------- 时间区间 / 统计聚合 ---------------- */
+
+  /** 周一为 0 的星期索引 */
+  function dowMonday(day) { return (new Date(dayStartTs(day, 0)).getDay() + 6) % 7; }
+
+  /** 月历矩阵：周一为第一列，不足的位置补 null */
+  function monthMatrix(anchorDay) {
+    var y = +anchorDay.slice(0, 4), m = +anchorDay.slice(5, 7);
+    var first = y + '-' + pad(m) + '-01';
+    var cells = [];
+    for (var i = 0; i < dowMonday(first); i++) cells.push(null);
+    var dim = new Date(y, m, 0).getDate();
+    for (var d = 1; d <= dim; d++) cells.push({ day: y + '-' + pad(m) + '-' + pad(d), n: d });
+    while (cells.length % 7 !== 0) cells.push(null);
+    return { cells: cells, label: y + ' 年 ' + m + ' 月', anchor: y + '-' + pad(m) + '-01' };
+  }
+
+  function shiftMonth(anchorDay, n) {
+    var y = +anchorDay.slice(0, 4), m = +anchorDay.slice(5, 7) + n;
+    if (m < 1) { m = 12; y--; } if (m > 12) { m = 1; y++; }
+    return y + '-' + pad(m) + '-01';
+  }
+
+  /** 统计区间：日 / 周 / 月 / 自定义，并给出用于环比的上一个等长区间 */
+  function rangeFor(state, kind, refDay, custom) {
+    var from, to;
+    if (kind === 'day') {
+      from = to = refDay;
+    } else if (kind === 'week') {
+      from = addDays(refDay, -dowMonday(refDay));
+      to = addDays(from, 6);
+    } else if (kind === 'month') {
+      from = refDay.slice(0, 8) + '01';
+      var y = +refDay.slice(0, 4), m = +refDay.slice(5, 7);
+      to = y + '-' + pad(m) + '-' + pad(new Date(y, m, 0).getDate());
+    } else {
+      from = (custom && custom.from) || refDay;
+      to = (custom && custom.to) || refDay;
+      if (from > to) { var t = from; from = to; to = t; }
+    }
+    var len = daysBetween(from, to) + 1;
+    var prevTo = addDays(from, -1);
+    return {
+      kind: kind, from: from, to: to, days: len,
+      prevFrom: addDays(prevTo, -(len - 1)), prevTo: prevTo,
+      label: from.replace(/-/g, '.') + ' ~ ' + to.replace(/-/g, '.')
+    };
+  }
+
+  function logsIn(state, from, to, allResults) {
+    return state.focusLogs.filter(function (l) {
+      if (l.logicalDay < from || l.logicalDay > to) return false;
+      return allResults ? true : l.result === 'completed';
+    });
+  }
+
+  function rangeStats(state, from, to) {
+    var done = logsIn(state, from, to, false).filter(function (l) { return l.result === 'completed'; });
+    var all = logsIn(state, from, to, true);
+    var minutes = done.reduce(function (a, l) { return a + l.actualMinutes; }, 0);
+    var days = daysBetween(from, to) + 1;
+    var active = {};
+    done.forEach(function (l) { active[l.logicalDay] = 1; });
+    var activeDays = Object.keys(active).length;
+    return {
+      minutes: minutes, days: days, sessions: done.length, starts: all.length,
+      activeDays: activeDays,
+      avgPerDay: Math.round(minutes / days),
+      avgPerActiveDay: activeDays ? Math.round(minutes / activeDays) : 0
+    };
+  }
+
+  function targetMinutesInRange(state, targetId, from, to) {
+    return logsIn(state, from, to, false)
+      .filter(function (l) { return l.result === 'completed' && l.targetId === targetId; })
+      .reduce(function (a, l) { return a + l.actualMinutes; }, 0);
+  }
+
+  /** 目标环比：本区间 vs 上一个等长区间 */
+  function targetProgress(state, target, range) {
+    var cur = targetMinutesInRange(state, target.id, range.from, range.to);
+    var prev = targetMinutesInRange(state, target.id, range.prevFrom, range.prevTo);
+    var goal = target.monthlyGoalMinutes || 0;
+    return {
+      target: target, cur: cur, prev: prev, delta: cur - prev,
+      pct: goal ? Math.round(cur / goal * 100) : 0,
+      prevPct: goal ? Math.round(prev / goal * 100) : 0
+    };
+  }
+
+  function logsOn(state, day) {
+    return state.focusLogs.filter(function (l) { return l.logicalDay === day; })
+      .sort(function (a, b) { return a.startedAt - b.startedAt; });
+  }
+
+  function monthLabel(day) { return day.slice(0, 4) + ' 年 ' + (+day.slice(5, 7)) + ' 月'; }
+  function monthShort(day) { return (+day.slice(5, 7)) + ' 月'; }
+
+  /* ---------------- 日结算 ---------------- */
+
+  function settleDay(state, day, now) {
+    var rec = ensureDay(state, day);
+    if (rec.finalSettled) return rec.report;
+    var report = { day: day, groups: {}, outNodes: [], trialFails: [], stateChanges: [], honors: [], recovery: null };
+    var recovering = inRecovery(state, now) || inNewbie(state, now);
+
+    state.policyGroups.forEach(function (g) {
+      var active = activeNodesOf(state, g.id);
+      var tolerance = g.noCollapse ? 0 : toleranceFor(active.length);
+      var realOut = [];
+
+      active.forEach(function (n) {
+        var c = rec.confirms[n.id];
+        var inTrial = n.trialEndsAt && day <= n.trialEndsAt;
+        // 默认点亮：被动型与半被动型挂靠在必然发生的动作上；
+        // 主动型未确认 → 结算时视为熄灭（保持约束力）
+        var isLit = (c === 'lit') || (c == null && n.type !== 'active');
+        if (isLit) {
+          n.streak = (n.streak || 0) + 1;
+          n.bestStreak = Math.max(n.bestStreak || 0, n.streak);
+          n.totalLit = (n.totalLit || 0) + 1;
+          n.lastConfirmedDay = day;
+          n.useCount = (n.useCount || 0) + 1;
+          var rate = (NODE_TYPES[n.type] || NODE_TYPES.active).rate;
+          n.internalization = Math.min(CFG.INTERNALIZE_MAX, (n.internalization || 0) + rate);
+          if (n.internalization >= CFG.INTERNALIZE_MAX) {
+            n.status = 'internalized';
+            n.internalizedAt = now;
+            report.stateChanges.push({ node: n.name, to: '已内化为习惯' });
+          }
+        } else if (inTrial) {
+          n.trialFails = (n.trialFails || 0) + 1;
+          report.trialFails.push({ node: n.name, fails: n.trialFails });
+          n.streak = 0;
+        } else {
+          realOut.push(n);
+        }
+      });
+
+      realOut.forEach(function (n) {
+        n.status = 'out';
+        n.streak = 0;
+        n.internalization = Math.max(0, (n.internalization || 0) - 30);
+        report.outNodes.push({ node: n.name, group: g.name });
+        softDeleteSubtree(state, n.id);
+      });
+
+      if (g.frozenUntil && now < g.frozenUntil) {
+        rec.groupStates[g.id] = 'frozen'; report.groups[g.id] = 'frozen'; return;
+      }
+      if (active.length === 0) {
+        rec.groupStates[g.id] = g.state; report.groups[g.id] = g.state; return;
+      }
+      if (g.noCollapse) {
+        g.state = 'stable'; g.shakenDays = 0; g.cleanDays = 0; g.locked = false;
+        rec.groupStates[g.id] = 'stable'; report.groups[g.id] = 'stable'; return;
+      }
+      // 重建期 / 新手期：只记录，不升级状态、不上锁
+      if (recovering) {
+        if (realOut.length === 0) g.cleanDays = (g.cleanDays || 0) + 1;
+        rec.groupStates[g.id] = g.state; report.groups[g.id] = g.state;
+        return;
+      }
+
+      var before = g.state;
+      if (realOut.length === 0) {
+        g.cleanDays = (g.cleanDays || 0) + 1;
+        g.shakenDays = 0;
+        if (g.state === 'broken' && g.cleanDays >= 2) { g.state = 'shaken'; g.cleanDays = 0; g.locked = false; }
+        else if (g.state === 'shaken' && g.cleanDays >= 2) { g.state = 'stable'; g.cleanDays = 0; g.locked = false; }
+        else if (g.state !== 'broken' && g.state !== 'shaken') { g.state = 'stable'; }
+      } else {
+        g.shakenDays = (g.shakenDays || 0) + 1;
+        g.cleanDays = 0;
+        if (realOut.length > tolerance) { g.state = 'broken'; g.locked = true; }
+        else { g.state = 'shaken'; }
+        if (g.shakenDays >= 3) { g.state = 'broken'; }   // 连续 3 天动摇 → 崩坏（只降级状态，不回滚）
+      }
+      if (before !== g.state) report.stateChanges.push({ group: g.name, from: before, to: g.state });
+      rec.groupStates[g.id] = g.state;
+      report.groups[g.id] = g.state;
+    });
+
+    var logs = completedLogsOn(state, day);
+    rec.focusMinutes = logs.reduce(function (a, l) { return a + l.actualMinutes; }, 0);
+    rec.sessions = logs.length;
+    rec.starts = dayStarts(state, day);
+
+    // 军衔快照（单调不减）
+    var k = state.kingdom;
+    var idx = rankIndexForMinutes(k.lifetimeFocusMinutes);
+    k.rankId = RANKS[idx].id;
+    if (idx > RANKS.indexOf(rankById(k.highestRankId))) k.highestRankId = RANKS[idx].id;
+
+    report.honors = evaluateHonors(state, day, now);
+
+    rec.finalSettled = true;
+    rec.settledAt = now;
+    rec.report = report;
+    state.settlements.push({
+      logicalDay: day, settledAt: now, focusMinutes: rec.focusMinutes,
+      sessions: rec.sessions, starts: rec.starts,
+      groupStates: JSON.parse(JSON.stringify(rec.groupStates))
+    });
+    return report;
+  }
+
+  /* ---------------- 重建期：断档后回来，不问罪 ---------------- */
+
+  function enterRecovery(state, now) {
+    var k = state.kingdom, today = todayKey(state, now);
+    k.recoveryUntil = now + CFG.RECOVERY_DAYS * 86400000;
+    k.recoveryReason = '断档 ' + (k.lastFocusDay ? daysBetween(k.lastFocusDay, today) : '若干') + ' 天后回来';
+    state.audit.push({ at: now, type: 'recovery_enter', detail: { reason: k.recoveryReason } });
+    return k.recoveryReason;
+  }
+
+  function runSettlement(state, now) {
+    now = now == null ? Date.now() : now;
+    var out = { settled: [], alerts: [], autoDefaulted: [], mainSettledNow: null, recoveryStarted: null };
+    var today = todayKey(state, now);
+    if (!state.meta) state.meta = { cursorDay: today };
+    if (!state.meta.cursorDay) state.meta.cursorDay = today;
+
+    if (state.meta.lastSeenAt && now < state.meta.lastSeenAt - 5 * 60000) {
+      state.audit.push({ at: now, type: 'clock_rollback', detail: { lastSeenAt: state.meta.lastSeenAt, delta: state.meta.lastSeenAt - now } });
+      out.alerts.push('检测到系统时间被回拨，已记录在案。');
+    }
+    state.meta.lastSeenAt = now;
+
+    // 断档回归 → 进入重建期
+    var k = state.kingdom;
+    if (k.lastFocusDay && (!k.recoveryUntil || now >= k.recoveryUntil) && !inRecovery(state, now)) {
+      var gap = daysBetween(k.lastFocusDay, today);
+      if (gap >= CFG.RECOVERY_TRIGGER_GAP) {
+        out.recoveryStarted = enterRecovery(state, now);
+      }
+    }
+
+    var guard = 0;
+    while (state.meta.cursorDay < today && guard++ < 4000) {
+      var rep = settleDay(state, state.meta.cursorDay, now);
+      if (rep) out.settled.push(rep);
+      state.meta.cursorDay = addDays(state.meta.cursorDay, 1);
+    }
+
+    var recT = ensureDay(state, today);
+    if (!recT.mainSettled && now >= mainSettleTs(state, today)) {
+      recT.mainSettled = true;
+      out.mainSettledNow = today;
+    }
+
+    out.autoDefaulted = autoDefaultRulings(state, now);
+    out.autoDefaulted.forEach(function (r) {
+      out.alerts.push('下必为例：' + r.subject + ' 超过 24 小时未裁定，已按保守默认判定违规。');
+    });
+
+    state.policyGroups.forEach(function (g) {
+      if (g.frozenUntil && now >= g.frozenUntil) {
+        g.frozenUntil = null; g.frozenReason = null;
+        out.alerts.push(g.name + ' 的冻结已到期，恢复判定。');
+      }
+    });
+    return out;
+  }
+
+  /* ---------------- 称号 ---------------- */
+
+  var HONORS = [
+    { id: 'first_seat', name: '首次上座', hint: '完成第一次专注' },
+    { id: 'chijiejie', name: '持劫节', hint: '连续 7 天每天专注 ≥ 10 分钟' },
+    { id: 'starter30', name: '三十而立', hint: '累计启动 30 次' },
+    { id: 'tenhours', name: '十小时', hint: '累计专注 ≥ 10 小时' },
+    { id: 'hundred', name: '百小时', hint: '累计专注 ≥ 100 小时' },
+    { id: 'jiezhu_qinwei', name: '劫主亲卫', hint: '连续 30 天国策全稳固' }
+  ];
+
+  function honorName(id) {
+    var h = HONORS.find(function (x) { return x.id === id; });
+    return h ? h.name : id;
+  }
+
+  function evaluateHonors(state, day, now) {
+    var k = state.kingdom, granted = [];
+    function give(id, name) {
+      if (k.honors.indexOf(id) === -1) { k.honors.push(id); granted.push(name); }
+    }
+    if (k.totalSessions >= 1) give('first_seat', '首次上座');
+
+    var ok = true;
+    for (var i = 0; i < 7; i++) {
+      if (dayMinutes(state, addDays(day, -i)) < 10) { ok = false; break; }
+    }
+    if (ok) give('chijiejie', '持劫节');
+
+    if ((k.attempts || 0) >= 30) give('starter30', '三十而立');
+    if (k.lifetimeFocusMinutes >= 600) give('tenhours', '十小时');
+    if (k.lifetimeFocusMinutes >= 6000) give('hundred', '百小时');
+
+    var stable = true;
+    for (var j = 0; j < 30; j++) {
+      var r = state.dayRecords[addDays(day, -j)];
+      if (!r || !r.finalSettled) { stable = false; break; }
+      var bad = state.policyGroups.some(function (g) {
+        return !g.noCollapse && (r.groupStates[g.id] === 'broken' || r.groupStates[g.id] === 'shaken');
+      });
+      if (bad) { stable = false; break; }
+    }
+    if (stable) give('jiezhu_qinwei', '劫主亲卫');
+    return granted;
+  }
+
+  function currentRankName(state) { return rankById(state.kingdom.rankId).name; }
+
+  return {
+    CFG: CFG, RANKS: RANKS, TROOP_LEVELS: TROOP_LEVELS,
+    DEFAULT_TROOPS: DEFAULT_TROOPS, DEFAULT_GROUPS: DEFAULT_GROUPS,
+    SUGGESTED_NODES: SUGGESTED_NODES, TROOP_ALIAS: TROOP_ALIAS, GROUP_ALIAS: GROUP_ALIAS,
+    NODE_TYPES: NODE_TYPES, NODE_TYPE_ORDER: NODE_TYPE_ORDER, HONORS: HONORS,
+
+    logicalDay: logicalDay, dayStartTs: dayStartTs, dayEndTs: dayEndTs,
+    addDays: addDays, daysBetween: daysBetween, todayKey: todayKey,
+    hhmm: hhmm, monthKey: monthKey,
+    fmtMinutes: fmtMinutes, fmtCompact: fmtCompact, fmtHours: fmtHours,
+
+    rankForMinutes: rankForMinutes, rankById: rankById, rankIndexForMinutes: rankIndexForMinutes,
+    nextRank: nextRank, rankProgress: rankProgress,
+    troopLevel: troopLevel, troopLevelIndex: troopLevelIndex, nextTroopLevel: nextTroopLevel,
+
+    uid: uid, defaultState: defaultState, ensureDay: ensureDay,
+    activeNodesOf: activeNodesOf, allNodesOf: allNodesOf, toleranceFor: toleranceFor,
+    nodeStateFor: nodeStateFor, inTrialOn: inTrialOn, effectiveLit: effectiveLit, isNodeEditable: isNodeEditable,
+    confirmNode: confirmNode, confirmAll: confirmAll, focusNodes: focusNodes,
+
+    inNewbie: inNewbie, inRecovery: inRecovery, statusSummary: statusSummary,
+    troopById: troopById, troopLabel: troopLabel,
+
+    startSession: startSession, endSession: endSession,
+    downgradeSession: downgradeSession, degradationUsedToday: degradationUsedToday,
+    makeReservation: makeReservation, seatReservation: seatReservation, lapseReservation: lapseReservation,
+    openRuling: openRuling, resolveRuling: resolveRuling, autoDefaultRulings: autoDefaultRulings,
+    softDeleteSubtree: softDeleteSubtree,
+
+    settleDay: settleDay, runSettlement: runSettlement,
+    dayMinutes: dayMinutes, dayStarts: dayStarts, todaySummary: todaySummary,
+    completedLogsOn: completedLogsOn, policyActivityOn: policyActivityOn,
+    dowMonday: dowMonday, monthMatrix: monthMatrix, shiftMonth: shiftMonth,
+    rangeFor: rangeFor, rangeStats: rangeStats, targetProgress: targetProgress,
+    targetMinutesInRange: targetMinutesInRange, logsOn: logsOn, logsIn: logsIn,
+    monthLabel: monthLabel, monthShort: monthShort,
+    minuteLevel: minuteLevel, adaptiveThresholds: adaptiveThresholds, levelWith: levelWith,
+    targetMinutesInMonth: targetMinutesInMonth,
+    countLitNodes: countLitNodes, countNodes: countNodes,
+    evaluateHonors: evaluateHonors, honorName: honorName,
+    currentRankName: currentRankName, enterRecovery: enterRecovery
+  };
+});
+
+</script>
+<script>
+/* 大永劫 · 视图层（一）：通用部件 + 开始页（行动台） */
+(function (root) {
+  'use strict';
+  var R = root.DYJ_Rules;
+  var V = root.DYJ_V = root.DYJ_V || {};
+
+  V.esc = function (s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  };
+  var esc = V.esc;
+
+  /* 极简线性图标（描边跟随文字颜色，不用 emoji） */
+  var ICONS = {
+    clock: '<circle cx="12" cy="12" r="8.4"/><path d="M12 7.4V12l3.1 2"/>',
+    check: '<circle cx="12" cy="12" r="8.4"/><path d="M8.2 12.4l2.6 2.6 5-5.4"/>',
+    undo: '<circle cx="12" cy="12" r="8.4"/><path d="M9.2 9.4l5.6 5.6M14.8 9.4l-5.6 5.6"/>',
+    flag: '<path d="M6.2 20.5V4.2"/><path d="M6.2 5h10.6l-1.9 3.1 1.9 3.1H6.2"/>',
+    nodes: '<circle cx="12" cy="5.6" r="2.4"/><circle cx="6" cy="18" r="2.4"/><circle cx="18" cy="18" r="2.4"/><path d="M12 8v3.4M12 11.4l-4.6 4M12 11.4l4.6 4"/>',
+    left: '<path d="M14.6 5.6L8.2 12l6.4 6.4"/>',
+    right: '<path d="M9.4 5.6L15.8 12l-6.4 6.4"/>',
+    user: '<circle cx="12" cy="8.6" r="3.5"/><path d="M4.9 19.6c1.4-3.3 3.9-4.9 7.1-4.9s5.7 1.6 7.1 4.9"/>',
+    save: '<path d="M12 3.8v10.4"/><path d="M8.2 10.4L12 14.2l3.8-3.8"/><path d="M4.8 18.6h14.4"/>',
+    load: '<path d="M12 14.2V3.8"/><path d="M8.2 7.6L12 3.8l3.8 3.8"/><path d="M4.8 18.6h14.4"/>',
+    book: '<path d="M4.8 5.2h6.4v13.6H4.8z"/><path d="M12.8 5.2h6.4v13.6h-6.4z"/>',
+    pen: '<path d="M16.6 4.6l2.8 2.8-9.4 9.4-3.6.8.8-3.6z"/>',
+    leaf: '<path d="M19.4 4.6c-8 0-13 3.4-13 9.2 0 1.6.5 3 1.4 4.2"/><path d="M6.4 19.4c0-4.6 3.4-8 8.6-8.8"/>',
+    grid: '<rect x="4.6" y="4.6" width="6" height="6" rx="1.4"/><rect x="13.4" y="4.6" width="6" height="6" rx="1.4"/><rect x="4.6" y="13.4" width="6" height="6" rx="1.4"/><rect x="13.4" y="13.4" width="6" height="6" rx="1.4"/>',
+    trash: '<path d="M5.4 7h13.2"/><path d="M9 7V4.8h6V7"/><path d="M6.8 7l.9 12.2h8.6L17.2 7"/>'
+  };
+  V.icon = function (name, cls) {
+    return '<svg class="' + (cls || '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[name] || '') + '</svg>';
+  };
+
+  /** 大数字 + 小单位，用于数据卡 */
+  V.bigDuration = function (minutes) {
+    minutes = Math.round(minutes || 0);
+    var h = Math.floor(minutes / 60), m = minutes % 60;
+    if (h && m) return '<b>' + h + '</b><i>小时</i><b>' + m + '</b><i>分钟</i>';
+    if (h) return '<b>' + h + '</b><i>小时</i>';
+    return '<b>' + m + '</b><i>分钟</i>';
+  };
+
+  V.troopName = function (s, id) { return R.troopLabel(s, id); };
+  /* 副标题（世界观名）。觉得花哨就在设置里关掉，主名永远是功能名。 */
+  V.sub = function (s, text) { return (s.settings.showTitles && text) ? '<span>' + V.esc(text) + '</span>' : ''; };
+
+  /* ---------------- 顶栏：只留国号和军衔 ---------------- */
+  V.renderTopbar = function (s) {
+    var k = s.kingdom;
+    return '<div class="topbar"><div class="topbar-in">' +
+      '<span class="brand">' + esc(k.name) + '</span>' +
+      '<span class="rank">' + esc(R.currentRankName(s)) + '</span>' +
+      '<span class="since">' + R.fmtHours(k.lifetimeFocusMinutes) + '</span>' +
+      '</div></div>';
+  };
+
+  /* ---------------- 提示条：只在真的需要时出现 ---------------- */
+  V.renderAlerts = function (s, now) {
+    var out = [];
+    if (root.DYJ_App && root.DYJ_App.storageOk === false) {
+      out.push('<div class="alert bad"><b>这台设备现在存不了数据</b>：浏览器禁止了这个页面写入本地存储，' +
+        '你记的东西刷新后就没了。<br>请换用 Chrome / Edge / 夸克 等浏览器，' +
+        '或者把它放到一个 http 地址上打开（见《手机使用指南》）。' +
+        '<button class="btn sm" data-act="go:mine">先导出试试</button></div>');
+    }
+    if (R.inRecovery(s, now)) {
+      out.push('<div class="alert info"><b>重建期</b>：' + esc(s.kingdom.recoveryReason || '') +
+        '。这 ' + R.CFG.RECOVERY_DAYS + ' 天目标降到最低——只坐 5 分钟就算数，国策不会判你崩塌。</div>');
+    }
+    s.rulings.filter(function (r) { return !r.decision; }).forEach(function (r) {
+      var left = Math.max(0, 24 - Math.floor((now - r.at) / 3600000));
+      out.push('<div class="alert warn"><b>有个判断等你做</b>：「' + esc(r.subject) + '」' +
+        '（约 ' + left + ' 小时后按保守默认处理）' +
+        '<div class="alert-acts">' +
+        '<button class="btn sm" data-act="ruling-permit:' + r.id + '">永久允许</button>' +
+        '<button class="btn sm danger" data-act="ruling-reset:' + r.id + '">判定违规</button>' +
+        '</div></div>');
+    });
+    R.statusSummary(s, now).forEach(function (f) {
+      if (f.level === 'warn') out.push('<div class="alert warn">' + esc(f.text) + '</div>');
+    });
+    if (s.kingdom.locked_placeholder) { /* noop */ }
+    var needBackup = !s.meta.lastExportAt || (now - s.meta.lastExportAt) > 7 * 86400000;
+    if (needBackup && s.focusLogs.length > 0) {
+      out.push('<div class="alert info">已经一周没备份了，浏览器清理数据会连记录一起删掉。' +
+        '<button class="btn sm" data-act="go:rules">去导出</button></div>');
+    }
+    return out.join('');
+  };
+
+  /* ---------------- 进行中的专注 ---------------- */
+  function renderRunning(s, sess) {
+    var t = R.troopById(s, sess.troopId);
+    return '<div class="card hero running">' +
+      '<div class="hero-label">' + esc(t ? t.label : '专注') +
+      (sess.degraded ? '（降级启动）' : '') + ' 进行中</div>' +
+      '<div id="live-session" class="timer">--:--</div>' +
+      '<div class="tiny muted" style="margin-top:-8px;margin-bottom:14px">计划 ' + sess.plannedMinutes + ':00' +
+      (sess.taskName ? ' · ' + esc(sess.taskName) : '') + '</div>' +
+      '<div class="hero-acts">' +
+      '<button class="btn primary" data-act="end-complete">完成</button>' +
+      '<button class="btn" data-act="open-downgrade">降级</button>' +
+      '<button class="btn danger" data-act="end-abort">中断</button>' +
+      '</div></div>';
+  }
+
+  function renderReservation(s, resv) {
+    return '<div class="card hero">' +
+      '<div class="hero-label">预约已发出 · ' + esc(resv.signal) + '</div>' +
+      '<div id="live-reservation" class="count-big">--:--</div>' +
+      '<div class="hero-acts">' +
+      '<button class="btn primary" data-act="seat">已经坐下了</button>' +
+      '<button class="btn danger" data-act="lapse">没坐成</button>' +
+      '</div></div>';
+  }
+
+  /* ---------------- 主行动区：一次点击开始 ---------------- */
+  function renderHero(s) {
+    var troopId = s.settings.lastTroopId || 'zuoye';
+    var t = R.troopById(s, troopId);
+    var mins = s.settings.defaultPlanMinutes || 10;
+    return '<div class="card hero">' +
+      '<div class="hero-label">现在开始</div>' +
+      '<button class="start-btn" data-act="quick-start">' +
+      '<span class="start-min">' + mins + ' 分钟</span>' +
+      '<span class="start-what">' + esc(t ? t.label : '专注') + '</span>' +
+      '</button>' +
+      '<div class="hero-acts">' +
+      '<button class="btn" data-act="pick-troop">换一件事 / 改时长</button>' +
+      '<button class="btn" data-act="reserve">启动困难，先打个响指</button>' +
+      '</div>' +
+      '<div class="hero-note">坐 5 分钟也算。降级启动不算失败。</div>' +
+      '</div>';
+  }
+
+  /* ---------------- 今天的三个数字 ---------------- */
+  function renderToday(s, now) {
+    var sum = R.todaySummary(s, now);
+    var deltaText = sum.yesterday === 0
+      ? (sum.minutes > 0 ? '昨天没有记录' : '今天还没开始')
+      : '昨天全天 ' + sum.yesterday + ' 分钟' + (sum.delta > 0 ? ' · 今天已经多了 ' + sum.delta + ' 分钟' : '');
+    return '<div class="nums">' +
+      '<div class="num"><b>' + sum.minutes + '</b><span>今天专注（分钟）</span></div>' +
+      '<div class="num"><b>' + sum.starts + '</b><span>启动次数</span></div>' +
+      '<div class="num"><b>' + (sum.streak || 0) + '</b><span>连续天' +
+      (s.kingdom.bestFocusStreak ? '·最高 ' + s.kingdom.bestFocusStreak : '') + '</span></div>' +
+      '</div>' +
+      '<div class="delta">' + esc(deltaText) + (sum.chain ? ' · 当前链条 #' + sum.chain : '') + '</div>';
+  }
+
+  /* ---------------- 今天要做的事 ---------------- */
+  function renderChecklist(s, now) {
+    var day = R.todayKey(s, now);
+    var rec = R.ensureDay(s, day);
+    var items = [];
+    s.policyGroups.forEach(function (g) {
+      R.activeNodesOf(s, g.id).forEach(function (n) {
+        items.push({ n: n, g: g, lit: R.effectiveLit(s, day, n) });
+      });
+    });
+    if (!items.length) {
+      return '<div class="card"><h3>今天要做的事</h3>' +
+        '<div class="empty">还没有国策。到「国策」里加一条——越简单越好，比如「起床后先喝一杯水」。</div>' +
+        '<div class="center"><button class="btn" data-act="go:rules">去加一条</button></div></div>';
+    }
+    var undone = items.filter(function (x) { return !x.lit; });
+    var done = items.filter(function (x) { return x.lit; });
+
+    var head = '<div class="card"><div class="card-head"><h3>今天要做的事</h3>' +
+      '<span class="muted">' + done.length + '/' + items.length + '</span></div>';
+    if (undone.length) {
+      head += '<div class="center" style="margin-bottom:10px">' +
+        '<button class="btn primary wide" data-act="confirm-all">今天这些都做到了</button></div>';
+    }
+    head += '<div class="checklist">';
+    items.forEach(function (x) {
+      var cls = x.lit ? 'ok' : 'no';
+      var mark = x.lit ? '✓' : '✕';
+      var sub = x.g.name + (x.n.trigger ? ' · ' + esc(x.n.trigger) : '') +
+        ((x.n.streak || 0) > 0 ? ' · 连续 ' + x.n.streak + ' 天' : '') +
+        (R.inTrialOn(x.n, day) ? ' · 试用中' : '') +
+        (x.n.type === 'active' ? ' · 要主动做' : '');
+      head += '<button class="checkline ' + cls + '" data-act="toggle-node:' + x.n.id + '">' +
+        '<span class="mark">' + mark + '</span>' +
+        '<span class="body"><span class="name">' + esc(x.n.name) + '</span>' +
+        '<span class="sub">' + sub + '</span></span>' +
+        '</button>';
+    });
+    head += '</div>';
+    if (undone.length) {
+      head += '<div class="muted center" style="margin-top:10px">没做到也没关系，点一下标出来就行——这是给自己看的。</div>';
+    }
+    return head + '</div>';
+  }
+
+  /* ---------------- 开始页 ---------------- */
+  V.renderStart = function (s, now) {
+    var sess = s.runtime && s.runtime.activeSession;
+    var resv = s.runtime && s.runtime.activeReservation;
+    var html = '';
+    // 第一屏永远是"现在开始"——行动在提示之前
+    if (sess) html += renderRunning(s, sess);
+    else if (resv) html += renderReservation(s, resv);
+    else html += renderHero(s);
+    html += V.renderAlerts(s, now);
+    html += '<div class="card">' + renderToday(s, now) + '</div>';
+    html += renderChecklist(s, now);
+    return html;
+  };
+
+  /* ---------------- 兵种选择弹窗 ---------------- */
+  V.troopPicker = function (s, now, presets) {
+    var html = '<h2>换一件事</h2>' +
+      '<div class="pick-grid">' +
+      s.troops.filter(function (t) { return !t.locked; }).map(function (t) {
+        return '<button class="pick' + (t.id === s.settings.lastTroopId ? ' on' : '') + '" data-act="choose-troop:' + t.id + '">' +
+          '<b>' + esc(t.label) + '</b>' + V.sub(s, t.title) +
+          '<i>' + R.fmtCompact(t.focusMinutes) + ' · ' + t.sessions + ' 次</i></button>';
+      }).join('') +
+      '</div>' +
+      '<div class="field" style="margin-top:14px"><label>多长时间</label>' +
+      '<div class="row tight">' +
+      presets.map(function (m) {
+        return '<button class="btn sm' + (m === s.settings.defaultPlanMinutes ? ' primary' : '') + '" data-act="choose-min:' + m + '">' + m + ' 分钟</button>';
+      }).join('') +
+      '<input type="number" id="f-custom" value="" placeholder="自定义" style="width:96px;padding:5px 8px;border:1px solid var(--line-strong);border-radius:8px">' +
+      '</div></div>' +
+      '<div class="field"><label>这次具体做什么（可选，会出现在明细里）</label>' +
+      '<input type="text" id="f-task" value="' + esc(s.settings.lastTaskName || '') + '" placeholder="深呼吸并按动笔芯"></div>' +
+      '<div class="foot"><button class="btn" data-act="close-modal">取消</button>' +
+      '<button class="btn primary" data-act="start-chosen">开始</button></div>';
+    return html;
+  };
+
+  V.stat = function (k, v, n) {
+    return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
+      (n ? '<div class="n">' + n + '</div>' : '') + '</div>';
+  };
+
+  V.statePill = function (g) {
+    if (g.noCollapse) return '<span class="tag">元规则</span>';
+    if (g.frozenUntil) return '<span class="tag">冻结</span>';
+    if (g.state === 'broken') return '<span class="tag warn">崩坏</span>';
+    if (g.state === 'shaken') return '<span class="tag">动摇</span>';
+    return '';
+  };
+})(window);
+
+</script>
+<script>
+/* 大永劫 · 视图层（二）：规则页（国策可随时增删改 + 元规则 + 设置） */
+(function (root) {
+  'use strict';
+  var R = root.DYJ_Rules;
+  var V = root.DYJ_V;
+  var esc = V.esc;
+
+  /* ---------------- 国策 ---------------- */
+  V.renderPolicy = function (s, now, ui) {
+    var gid = ui.groupId || (s.policyGroups[0] && s.policyGroups[0].id);
+    var g = s.policyGroups.find(function (x) { return x.id === gid; }) || s.policyGroups[0];
+    var day = R.todayKey(s, now);
+
+    var html = '<div class="card"><div class="card-head"><h3>国策</h3>' +
+      '<span class="muted">规则越少越容易活下来</span></div>' +
+      '<p class="muted">默认那几条只是起步建议，随时可以改、删、加。真正的国策树是你自己一条条长出来的。</p>' +
+      '</div>';
+
+    html += '<div class="tabs">';
+    s.policyGroups.forEach(function (x) {
+      var bad = x.locked || x.state === 'broken';
+      html += '<button class="tab' + (x.id === gid ? ' on' : '') + '" data-act="pick-group:' + x.id + '">' +
+        esc(x.name) + (bad ? '<span class="dot"></span>' : '') + '</button>';
+    });
+    html += '<button class="tab" data-act="add-group">+ 新组</button></div>';
+
+    if (!g) { html += '<div class="empty">还没有国策组。</div>'; return html; }
+
+    var nodes = s.policyNodes.filter(function (n) { return n.groupId === g.id && n.status !== 'removed'; });
+    var active = R.activeNodesOf(s, g.id);
+    var tol = g.noCollapse ? 0 : R.toleranceFor(active.length);
+    var rec = R.ensureDay(s, day);
+    var outToday = active.filter(function (n) { return R.nodeStateFor(s, day, n) === 'out'; }).length;
+
+    html += '<div class="card"><div class="card-head">' +
+      '<h3>' + esc(g.name) + (s.settings.showTitles && g.title ? ' <span class="muted">' + esc(g.title) + '</span>' : '') + '</h3>' +
+      V.statePill(g) + '</div>' +
+      '<div class="row tight" style="margin-bottom:10px">' +
+      '<span class="tag">容错 ' + tol + '</span>' +
+      '<span class="tag">' + active.length + ' 条</span>' +
+      (outToday ? '<span class="tag warn">今天熄灭 ' + outToday + '</span>' : '') +
+      (g.shakenDays ? '<span class="tag">动摇 ' + g.shakenDays + ' 天</span>' : '') +
+      '</div>' +
+      '<div class="row tight">' +
+      '<button class="btn sm primary" data-act="add-node:' + g.id + '">+ 加一条国策</button>' +
+      '<button class="btn sm" data-act="edit-group:' + g.id + '">改组设置</button>' +
+      (g.frozenUntil
+        ? '<button class="btn sm" data-act="unfreeze:' + g.id + '">取消冻结</button>'
+        : '<button class="btn sm" data-act="freeze:' + g.id + '">冻结这一组</button>') +
+      (g.locked ? '<button class="btn sm" data-act="unlock:' + g.id + '">解除上锁</button>' : '') +
+      '<button class="btn sm danger" data-act="del-group:' + g.id + '">删除本组</button>' +
+      '</div></div>';
+
+    html += '<div class="card">';
+    if (!nodes.length) {
+      html += '<div class="empty">这一组还是空的。<br>加一条"傻瓜国策"——简单到几乎不可能失败的那种。</div>';
+    } else {
+      html += renderTree(s, nodes, now, day);
+    }
+    html += '</div>';
+
+    var internalized = s.policyNodes.filter(function (n) { return n.groupId === g.id && n.status === 'internalized'; });
+    if (internalized.length) {
+      html += '<div class="card"><div class="card-head"><h3>已经是习惯了</h3><span class="muted">不再占用容错，也不会崩</span></div>' +
+        internalized.map(function (n) {
+          return '<div class="nrow done"><span class="nm">' + esc(n.name) + '</span>' +
+            '<span class="muted">最长连续 ' + (n.bestStreak || 0) + ' 天</span>' +
+            '<span class="acts"><button class="btn sm" data-act="reset-internal:' + n.id + '">退回重练</button></span></div>';
+        }).join('') + '</div>';
+    }
+
+    html += V.renderAltar(s, now);
+    return html;
+  };
+
+  function renderTree(s, nodes, now, day) {
+    var byParent = {};
+    nodes.forEach(function (n) {
+      var p = (n.parentId && nodes.some(function (x) { return x.id === n.parentId; })) ? n.parentId : '__root';
+      (byParent[p] = byParent[p] || []).push(n);
+    });
+    function walk(pid) {
+      return (byParent[pid] || []).map(function (n) {
+        var st = R.nodeStateFor(s, day, n);
+        var cls = { lit: 'on', out: 'off', pending: 'todo', trial: 'trial', frozen: 'frozen', internalized: 'done' }[st] || 'todo';
+        var mark = { lit: '✓', out: '✕', pending: '○', trial: '试', frozen: '冻', internalized: '✓' }[st] || '○';
+        var editable = R.isNodeEditable(s, day, n, now);
+        var kids = walk(n.id);
+        var sub = (R.NODE_TYPES[n.type] || {}).name || '';
+        sub += ' · 连续 ' + (n.streak || 0) + ' 天 · 最长 ' + (n.bestStreak || 0) +
+          ' · 内化 ' + (n.internalization || 0);
+        if (R.inTrialOn(n, day)) sub += ' · 试用中';
+        if (n.trigger) sub += ' · 触发：' + esc(n.trigger);
+        if (n.note) sub += ' · ' + esc(n.note);
+        var h = '<div class="nrow ' + cls + '">' +
+          '<button class="mark-btn" data-act="toggle-node:' + n.id + '"' + (editable ? '' : ' disabled') + '>' + mark + '</button>' +
+          '<span class="body"><span class="nm">' + esc(n.name) +
+          (n.isRoot ? ' <span class="tag">根</span>' : '') + '</span>' +
+          '<span class="sub">' + sub + '</span></span>' +
+          '<span class="acts">' +
+          '<button class="btn sm" data-act="edit-node:' + n.id + '">编辑</button>' +
+          '<button class="btn sm" data-act="add-sub:' + n.id + '">+子</button>' +
+          '<button class="btn sm danger" data-act="del-node:' + n.id + '">删</button>' +
+          '</span></div>';
+        if (kids) h += '<div class="kids">' + kids + '</div>';
+        return h;
+      }).join('');
+    }
+    return walk('__root');
+  }
+
+  /* ---------------- 元规则 ---------------- */
+  V.renderAltar = function (s, now) {
+    var day = R.todayKey(s, now);
+    var rec = R.ensureDay(s, day);
+    var quota = s.settings.entertainmentQuotaMinutes;
+    var used = rec.entertainmentMinutes || 0;
+    var over = used > quota;
+    var permits = s.permits || [];
+    var rulings = s.rulings.slice().reverse();
+
+    var html = '<details class="fold"><summary>元规则<span class="muted">冻结 · 娱乐配额 · 下必为例</span></summary>' +
+      '<div class="fold-body">';
+
+    html += '<h4>娱乐配额</h4>' +
+      '<div class="row tight"><span class="tag' + (over ? ' warn' : '') + '">今天 ' + used + ' / ' + quota + ' 分钟</span>' +
+      '<button class="btn sm" data-act="quota:5">+5</button>' +
+      '<button class="btn sm" data-act="quota:15">+15</button>' +
+      '<button class="btn sm" data-act="quota:30">+30</button>' +
+      '<button class="btn sm" data-act="quota:-5">-5</button>' +
+      '<button class="btn sm" data-act="quota:0">清零</button></div>' +
+      (over ? '<div class="alert warn">超出 ' + (used - quota) + ' 分钟。要不要把它变成一条正式规则？' +
+        '<button class="btn sm" data-act="open-ruling:quota">发起判断</button></div>' : '') +
+      '<p class="muted tiny">超出配额不扣任何东西，它只是提醒你：这里有一条你还没想清楚的边界。</p>';
+
+    html += '<h4>冻结</h4><p class="muted tiny">生病、考试周、出门在外——冻结期间这一组不算熄灭，写一句原因就行。</p>' +
+      '<div class="row tight">' + s.policyGroups.map(function (g) {
+        return '<button class="btn sm" data-act="' + (g.frozenUntil ? 'unfreeze:' : 'freeze:') + g.id + '">' +
+          esc(g.name) + (g.frozenUntil ? ' ✓解冻' : ' 冻结') + '</button>';
+      }).join('') + '</div>';
+
+    html += '<h4>下必为例</h4>' +
+      '<p class="muted tiny">遇到疑似违规，只能二选一：判定违规（清零重来），或者判定允许（从此永久合法、不可撤销）。' +
+      '永久许可越多，说明你的边界越松。</p>' +
+      '<div class="row tight"><button class="btn sm" data-act="open-ruling:manual">发起一次判断</button>' +
+      '<span class="tag">永久许可 ' + permits.length + ' 条</span>' +
+      '<span class="tag">今日降级 ' + R.degradationUsedToday(s, now) + '/' + s.settings.downgradePerDayLimit + '</span></div>';
+
+    if (permits.length) {
+      html += '<div class="list">' + permits.map(function (p) {
+        return '<div class="li"><span class="nm">' + esc(p.behavior) + '</span>' +
+          '<span class="muted">' + R.logicalDay(p.grantedAt, s.settings.dayBoundaryHour) + '</span></div>';
+      }).join('') + '</div>';
+    }
+    if (rulings.length) {
+      html += '<div class="list">' + rulings.slice(0, 8).map(function (r) {
+        var tag = !r.decision ? '待判断' : (r.decision === 'permitted' ? '允许' : '违规');
+        return '<div class="li"><span class="nm">' + esc(r.subject) + '</span>' +
+          '<span class="muted">' + tag + ' · ' + r.logicalDay + (r.note ? ' · ' + esc(r.note) : '') + '</span></div>';
+      }).join('') + '</div>';
+    }
+    return html + '</div></details>';
+  };
+
+})(window);
+
+</script>
+<script>
+/* 大永劫 · 视图层：数据统计 + 行为热力图详情 */
+(function (root) {
+  'use strict';
+  var R = root.DYJ_Rules;
+  var V = root.DYJ_V;
+  var esc = V.esc;
+
+  var DOW = ['一', '二', '三', '四', '五', '六', '日'];
+  var P_ICONS = ['book', 'pen', 'leaf', 'grid'];
+
+  function hexA(hex, a) {
+    var h = String(hex || '#2E7D32').replace('#', '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var n = parseInt(h, 16);
+    return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+  }
+
+  /* ================= 数据统计 ================= */
+  V.renderStats = function (s, now, ui) {
+    var today = R.todayKey(s, now);
+    var mode = s.settings.heatmapMode;
+    var th = R.adaptiveThresholds(s, today);
+    var doneCount = s.focusLogs.filter(function (l) { return l.result === 'completed'; }).length;
+
+    var html = '<div class="statcards">' +
+      card('clock', '累计专注时长', V.bigDuration(s.kingdom.lifetimeFocusMinutes)) +
+      card('check', '完成任务单元', '<b>' + doneCount + '</b><i>个</i>') +
+      card('flag', '点亮国策数', '<b>' + R.countLitNodes(s) + '</b><i>个</i>') +
+      card('nodes', '树节点总数', '<b>' + R.countNodes(s) + '</b><i>个</i>') +
+      '</div>';
+
+    html += '<div class="card"><div class="card-head"><h3>综合行为热力图</h3>' +
+      '<button class="btn sm ghost" data-act="open-heat">详情 ›</button></div>' +
+      multiMonths(s, now, 4, mode, th, today) +
+      legend(mode, th) + '</div>';
+
+    html += analysis(s, now, ui);
+    html += troops(s);
+    return html;
+  };
+
+  function card(icon, label, valueHTML) {
+    return '<div class="statcard"><span class="icw">' + V.icon(icon) + '</span>' +
+      '<span class="tx"><span class="k">' + label + '</span><span class="v">' + valueHTML + '</span></span></div>';
+  }
+
+  function multiMonths(s, now, count, mode, th, today) {
+    var anchor = today.slice(0, 8) + '01';
+    var out = [];
+    for (var i = count - 1; i >= 0; i--) out.push(miniMonth(s, R.shiftMonth(anchor, -i), today, mode, th));
+    return '<div class="months">' + out.join('') + '</div>';
+  }
+
+  function miniMonth(s, anchor, today, mode, th) {
+    var mm = R.monthMatrix(anchor);
+    var h = '<div class="mon"><div class="mh">' + R.monthShort(anchor) + '</div>' +
+      '<div class="dow7">' + DOW.map(function (d) { return '<span>' + d + '</span>'; }).join('') + '</div>' +
+      '<div class="mgrid">';
+    mm.cells.forEach(function (c) {
+      if (!c || c.day > today) { h += '<div class="mc blank"></div>'; return; }
+      var lv = R.levelWith(R.dayMinutes(s, c.day), mode, th);
+      var pa = R.policyActivityOn(s, c.day);
+      h += '<div class="mc' + (lv ? ' lv' + lv : '') + (pa.count ? ' pol' : '') +
+        (c.day === today ? ' today' : '') + '" data-act="pick-day:' + c.day + '">' + c.n + '</div>';
+    });
+    return h + '</div></div>';
+  }
+
+  function legend(mode, th) {
+    var names = (mode === 'adaptive' && th)
+      ? ['≤' + R.fmtCompact(th[0]), '≤' + R.fmtCompact(th[1]), '≤' + R.fmtCompact(th[2]), '>' + R.fmtCompact(th[2])]
+      : ['<10 分', '10–25 分', '25–60 分', '>1 小时'];
+    return '<div class="legend">' +
+      '<span><i class="sw" style="background:var(--g0)"></i>没专注</span>' +
+      '<span><i class="sw" style="background:var(--g1)"></i>' + names[0] + '</span>' +
+      '<span><i class="sw" style="background:var(--g2)"></i>' + names[1] + '</span>' +
+      '<span><i class="sw" style="background:var(--g3)"></i>' + names[2] + '</span>' +
+      '<span><i class="sw" style="background:var(--g4)"></i>' + names[3] + '</span>' +
+      '<span><i class="sw swpol"></i>当天动过国策</span></div>';
+  }
+
+  /* ================= 目标投入与分析 ================= */
+  function analysis(s, now, ui) {
+    var today = R.todayKey(s, now);
+    var kind = ui.rangeKind || 'month';
+    var ref = ui.rangeRef || today;
+    var range = R.rangeFor(s, kind, ref, ui.customRange);
+    var st = R.rangeStats(s, range.from, range.to);
+    var rows = s.targets.map(function (t) { return R.targetProgress(s, t, range); });
+    var pos = rows.filter(function (r) { return r.cur > 0; });
+    var total = pos.reduce(function (a, r) { return a + r.cur; }, 0);
+
+    var html = '<div class="card"><div class="card-head"><h3>目标投入与分析</h3></div>' +
+      '<div class="segrow">' +
+      '<button class="btn sm ghost" data-act="range-now">回到本月</button>' +
+      '<button class="btn sm" data-act="range-shift:-1">‹</button>' +
+      '<button class="btn sm" data-act="range-shift:1">›</button>' +
+      '<div class="seg">' +
+      ['day|日', 'week|周', 'month|月', 'custom|自定义'].map(function (x) {
+        var p = x.split('|');
+        return '<button class="' + (kind === p[0] ? 'on' : '') + '" data-act="range-kind:' + p[0] + '">' + p[1] + '</button>';
+      }).join('') +
+      '</div></div>';
+
+    if (kind === 'custom') {
+      html += '<div class="row tight" style="margin-bottom:10px">' +
+        '<input type="date" id="rg-from" value="' + esc(range.from) + '" style="padding:7px 9px;border:1px solid var(--line2);border-radius:8px">' +
+        '<span class="muted">至</span>' +
+        '<input type="date" id="rg-to" value="' + esc(range.to) + '" style="padding:7px 9px;border:1px solid var(--line2);border-radius:8px">' +
+        '<button class="btn sm primary" data-act="range-apply">应用</button></div>';
+    }
+
+    html += '<div class="rangelabel">' + range.label + '</div>' +
+      '<div class="rangebig">总投入 <b>' + R.fmtMinutes(st.minutes) + '</b>，日均 <b>' + R.fmtMinutes(st.avgPerDay) + '</b></div>';
+
+    html += donutSVG(pos, total);
+    html += '<div class="pgrid" style="margin-top:16px">' + rows.map(progressCard).join('') + '</div>';
+    html += '<div class="center" style="margin-top:12px"><button class="btn sm ghost" data-act="edit-targets">改目标</button></div>';
+    return html + '</div>';
+  }
+
+  function donutSVG(rows, total) {
+    if (!total || !rows.length) return '<div class="empty">这个区间还没有专注记录。</div>';
+    var W = 380, H = 246, cx = W / 2, cy = H / 2 + 2, RO = 78, RI = 48;
+    function pt(rad, ang) { return { x: cx + rad * Math.cos(ang), y: cy + rad * Math.sin(ang) }; }
+    function arc(a0, a1, color) {
+      var large = (a1 - a0) > Math.PI ? 1 : 0;
+      var o0 = pt(RO, a0), o1 = pt(RO, a1), i1 = pt(RI, a1), i0 = pt(RI, a0);
+      return '<path d="M' + o0.x.toFixed(1) + ',' + o0.y.toFixed(1) +
+        ' A' + RO + ',' + RO + ' 0 ' + large + ',1 ' + o1.x.toFixed(1) + ',' + o1.y.toFixed(1) +
+        ' L' + i1.x.toFixed(1) + ',' + i1.y.toFixed(1) +
+        ' A' + RI + ',' + RI + ' 0 ' + large + ',0 ' + i0.x.toFixed(1) + ',' + i0.y.toFixed(1) + 'Z" fill="' + color + '"/>';
+    }
+    var parts = [], labels = [];
+    if (rows.length === 1) {
+      parts.push('<circle cx="' + cx + '" cy="' + cy + '" r="' + ((RO + RI) / 2) + '" fill="none" stroke="' +
+        rows[0].target.color + '" stroke-width="' + (RO - RI) + '"/>');
+    } else {
+      var a = -Math.PI / 2;
+      rows.forEach(function (row) {
+        var frac = row.cur / total, a2 = a + frac * Math.PI * 2;
+        parts.push(arc(a, a2, row.target.color));
+        labels.push({ mid: (a + a2) / 2, row: row, frac: frac });
+        a = a2;
+      });
+      layout(labels.filter(function (l) { return Math.cos(l.mid) >= 0; }), 1);
+      layout(labels.filter(function (l) { return Math.cos(l.mid) < 0; }), -1);
+    }
+    function layout(list, side) {
+      list.sort(function (p, q) { return Math.sin(p.mid) - Math.sin(q.mid); });
+      var n = list.length, top = 24, bot = H - 24;
+      list.forEach(function (L, i) {
+        var y = n > 1 ? top + (bot - top) / (n - 1) * i : (top + bot) / 2;
+        var p1 = pt(RO, L.mid);
+        var ex = side > 0 ? cx + RO + 12 : cx - RO - 12;
+        var tx = side > 0 ? W - 2 : 2;
+        parts.push('<polyline class="ldr" points="' + p1.x.toFixed(1) + ',' + p1.y.toFixed(1) + ' ' +
+          ex.toFixed(1) + ',' + y.toFixed(1) + ' ' + tx.toFixed(1) + ',' + y.toFixed(1) + '"/>');
+        var anchor = side > 0 ? 'end' : 'start';
+        parts.push('<text class="lb-name" x="' + tx + '" y="' + (y - 3) + '" text-anchor="' + anchor + '">' +
+          esc(L.row.target.name) + '</text>');
+        parts.push('<text class="lb-val" x="' + tx + '" y="' + (y + 12) + '" text-anchor="' + anchor + '">' +
+          R.fmtCompact(L.row.cur) + ' (' + (L.frac * 100).toFixed(1) + '%)</text>');
+      });
+    }
+    return '<svg class="donut" viewBox="0 0 ' + W + ' ' + H + '" role="img">' + parts.join('') + '</svg>';
+  }
+
+  function progressCard(p, i) {
+    var up = p.delta >= 0;
+    var pct = Math.max(0, Math.min(100, p.pct));
+    var prev = Math.max(0, Math.min(100, p.prevPct));
+    var base = Math.min(pct, prev);
+    var diff = Math.max(0, Math.min(100 - base, Math.abs(pct - prev)));
+    return '<div class="pcard">' +
+      '<span class="pic" style="background:' + hexA(p.target.color, 0.14) + ';color:' + p.target.color + '">' +
+      V.icon(P_ICONS[i % P_ICONS.length]) + '</span>' +
+      '<div class="pbody">' +
+      '<div class="ptop"><b>' + esc(p.target.name) + '</b>' +
+      '<span class="pd' + (up ? '' : ' down') + '">' + (up ? '+' : '−') + R.fmtCompact(Math.abs(p.delta)) + '</span></div>' +
+      '<div class="pc">' + p.prevPct + '% → <b>' + p.pct + '%</b></div>' +
+      '<div class="pbar">' +
+      '<i class="base" style="width:' + base + '%"></i>' +
+      (diff ? '<i class="' + (up ? 'grow' : 'shrink') + '" style="left:' + base + '%;width:' + diff + '%"></i>' : '') +
+      '</div></div></div>';
+  }
+
+  function troops(s) {
+    return '<div class="card"><div class="card-head"><h3>各类事情的累计</h3>' +
+      '<span class="muted">等级不会掉</span></div>' +
+      s.troops.filter(function (t) { return !t.locked; }).map(function (t) {
+        var lv = R.troopLevel(t.focusMinutes), nx = R.nextTroopLevel(t.focusMinutes);
+        var pct = 100;
+        if (nx) pct = Math.max(2, Math.min(100, Math.round((t.focusMinutes - lv.min) / (nx.min - lv.min) * 100)));
+        return '<div class="goal"><div class="row tight"><b>' + esc(t.label) + '</b>' + V.sub(s, t.title) +
+          '<span class="sp"></span><span class="muted">' + R.fmtCompact(t.focusMinutes) + ' · ' +
+          t.sessions + ' 次 · ' + esc(lv.name) + '</span></div>' +
+          '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+          (nx ? '<div class="muted tiny">再 ' + R.fmtCompact(nx.min - t.focusMinutes) + ' 到 ' + esc(nx.name) + '</div>' : '') +
+          '</div>';
+      }).join('') + '</div>';
+  }
+
+  /* ================= 行为热力图详情 ================= */
+  V.renderHeatDetail = function (s, now, ui) {
+    var today = R.todayKey(s, now);
+    var anchor = ui.heatMonth || (today.slice(0, 8) + '01');
+    var mm = R.monthMatrix(anchor);
+    var sel = ui.selectedDay || today;
+    var mode = s.settings.heatmapMode;
+    var th = R.adaptiveThresholds(s, today);
+
+    var html = '<div class="row tight" style="margin-bottom:12px">' +
+      '<button class="btn sm" data-act="go:stats">‹ 返回</button>' +
+      '<b style="font-size:16px">行为热力图详情</b></div>';
+
+    html += '<div class="card">' +
+      '<div class="row tight" style="justify-content:center;margin-bottom:12px">' +
+      '<button class="btn sm ghost" data-act="heat-month:-1">‹</button>' +
+      '<b style="font-size:17px;min-width:120px;text-align:center">' + R.monthLabel(anchor) + '</b>' +
+      '<button class="btn sm ghost" data-act="heat-month:1">›</button>' +
+      '</div>' +
+      '<div class="dow7" style="font-size:11.5px;margin-bottom:5px">' +
+      DOW.map(function (d) { return '<span>周' + d + '</span>'; }).join('') + '</div>' +
+      '<div class="bigcal">';
+    mm.cells.forEach(function (c) {
+      if (!c) { html += '<div class="bc blank"></div>'; return; }
+      var mins = R.dayMinutes(s, c.day);
+      var lv = R.levelWith(mins, mode, th);
+      var pa = R.policyActivityOn(s, c.day);
+      html += '<div class="bc' + (lv ? ' lv' + lv : '') + (pa.count ? ' pol' : '') +
+        (c.day === today ? ' today' : '') + (c.day === sel ? ' sel' : '') +
+        '" data-act="pick-day:' + c.day + '">' +
+        '<span class="n">' + c.n + '</span>' +
+        (mins ? '<span class="t">' + R.fmtCompact(mins) + '</span>' : '') +
+        '</div>';
+    });
+    html += '</div>' + legend(mode, th) + '</div>';
+
+    return html + dayDetail(s, sel);
+  };
+
+  function dayDetail(s, day) {
+    var logs = R.logsOn(s, day);
+    var mins = R.dayMinutes(s, day);
+    var html = '<div class="card"><div class="card-head">' +
+      '<h3>' + (+day.slice(5, 7)) + ' 月 ' + (+day.slice(8)) + ' 日</h3>' +
+      '<span class="muted" style="color:var(--g3);font-weight:650">' + R.fmtCompact(mins) + '</span></div>';
+
+    if (!logs.length) return html + '<div class="empty">这一天没有记录。</div></div>';
+    return html + '<div class="daylist">' + logs.map(function (l) {
+      var done = l.result === 'completed';
+      return '<div class="drow' + (done ? '' : ' no') + '">' +
+        '<span class="ck">' + V.icon(done ? 'check' : 'undo') + '</span>' +
+        '<span class="tm">' + R.hhmm(l.startedAt) + '</span>' +
+        '<span><span class="nm">' + esc(l.taskName || R.troopLabel(s, l.troopId)) + '</span>' +
+        (done && l.chainNo ? '<span class="no">#' + l.chainNo + '</span>' : '') + '</span>' +
+        '<span class="rt"><span class="du">' + R.fmtCompact(l.actualMinutes) + '</span>' +
+        '<span class="st">' + (done ? '已完成' : '中断') + '</span></span>' +
+        '</div>';
+    }).join('') + '</div></div>';
+  }
+})(window);
+
+</script>
+<script>
+/* 大永劫 · 视图层：我的 */
+(function (root) {
+  'use strict';
+  var R = root.DYJ_Rules;
+  var V = root.DYJ_V;
+  var esc = V.esc;
+
+  var HONOR_ICONS = {
+    first_seat: 'check', chijiejie: 'flag', starter30: 'nodes',
+    tenhours: 'clock', hundred: 'grid', jiezhu_qinwei: 'book'
+  };
+
+  V.renderMine = function (s, now) {
+    var k = s.kingdom;
+    var html = '';
+
+    /* 档案 */
+    html += '<div class="prof">' +
+      '<div class="avatar">' + esc((k.name || '永').slice(0, 1)) + '</div>' +
+      '<div style="min-width:0;flex:1">' +
+      '<div class="pn">' + esc(k.name) + '</div>' +
+      '<div class="ps">' + esc(k.emperorTitle || '我') + ' · ' + esc(R.currentRankName(s)) +
+      (R.inRecovery(s, now) ? ' · 重建期' : '') + '</div>' +
+      '<div class="prow">' +
+      '<div><b>' + R.fmtHours(k.lifetimeFocusMinutes) + '</b><span>累计专注</span></div>' +
+      '<div><b>' + (k.focusStreak || 0) + '</b><span>连续天</span></div>' +
+      '<div><b>' + (k.attempts || 0) + '</b><span>启动次数</span></div>' +
+      '</div></div></div>';
+
+    /* 军衔 */
+    var rp = R.rankProgress(k.lifetimeFocusMinutes);
+    html += '<div class="card"><div class="card-head"><h3>军衔</h3>' +
+      '<span class="muted">只升不降</span></div>' +
+      '<div class="rankbar">' +
+      '<div class="rb-top"><b>' + esc(rp.cur.name) + '</b>' +
+      '<span class="sp"></span>' +
+      '<span class="muted">' + (rp.next ? '距 ' + esc(rp.next.name) + ' 还差 ' + R.fmtMinutes(rp.remain)
+        : '已达最高') + '</span></div>' +
+      '<div class="bar"><i style="width:' + rp.pct + '%"></i></div>' +
+      '</div>' +
+      '<div class="map">' + R.RANKS.map(function (r) {
+        return '<i class="' + (k.lifetimeFocusMinutes >= r.min ? 'on' : '') + '" title="' + esc(r.name) + '"></i>';
+      }).join('') + '</div>' +
+      '<div class="tiny muted" style="margin-top:8px">每高一衔，需要的累计时长都在变长——这是设计，不是刁难。</div>' +
+      '</div>';
+
+    /* 称号 */
+    html += '<div class="card"><div class="card-head"><h3>称号</h3>' +
+      '<span class="muted">' + k.honors.length + ' / ' + R.HONORS.length + '</span></div>' +
+      '<div class="achv">' + R.HONORS.map(function (h) {
+        var got = k.honors.indexOf(h.id) >= 0;
+        return '<div class="a' + (got ? ' got' : '') + '">' +
+          '<span class="ai">' + V.icon(HONOR_ICONS[h.id] || 'flag') + '</span>' +
+          '<div class="t">' + esc(h.name) + '</div>' +
+          '<div class="h">' + esc(h.hint) + '</div></div>';
+      }).join('') + '</div></div>';
+
+    /* 数据 */
+    var size = 0;
+    try { size = JSON.stringify(s).length; } catch (e) { size = 0; }
+    html += '<div class="card"><div class="card-head"><h3>数据</h3>' +
+      '<span class="muted">' + (s.meta.lastExportAt ? '上次导出 ' + R.logicalDay(s.meta.lastExportAt, s.settings.dayBoundaryHour) : '从未导出') + '</span></div>' +
+      '<p class="muted">记录只存在这台设备的浏览器里。清理浏览器数据会一并删除，请定期导出备份。</p>' +
+      '<div class="row tight" style="margin-top:10px">' +
+      '<button class="btn primary sm" data-act="export">' + V.icon('save') + ' 导出备份</button>' +
+      '<button class="btn sm" data-act="import">' + V.icon('load') + ' 导入备份</button>' +
+      '<button class="btn sm danger" data-act="wipe">清空数据</button></div>' +
+      '<div class="list" style="margin-top:12px">' +
+      kv('专注记录', s.focusLogs.length + ' 条') +
+      kv('逻辑日', Object.keys(s.dayRecords).length + ' 天') +
+      kv('国策节点', s.policyNodes.length + ' 个') +
+      kv('占用体积', Math.round(size / 1024) + ' KB') +
+      '</div></div>';
+
+    /* 参数 */
+    var st = s.settings;
+    html += '<div class="card"><div class="card-head"><h3>参数</h3></div>' +
+      '<div class="grid c2">' +
+      num('s-boundary', '一天从几点开始', st.dayBoundaryHour, '默认 4 点。凌晨 2 点睡算前一天的账。') +
+      num('s-settle', '结算时间', st.settlementHour, '默认 23 点。之后只有被动型国策还能改。') +
+      num('s-plan', '默认专注时长（分钟）', st.defaultPlanMinutes, '首页大按钮用的时长。') +
+      num('s-degrade', '每天可降级次数', st.downgradePerDayLimit, '降级启动不算失败。') +
+      num('s-quota', '每天娱乐配额（分钟）', st.entertainmentQuotaMinutes, '只用于提醒，不扣任何东西。') +
+      date('s-newbie', '新手期到', st.newbieProtectionUntil, '这段时间断档不会让国策崩坏。') +
+      '</div>' +
+      '<div class="field"><label><input type="checkbox" id="s-titles"' + (st.showTitles ? ' checked' : '') +
+      '> 显示世界观副标题</label>' +
+      '<div class="hint">关掉之后界面只剩功能名（写作业、作息、身体）。</div></div>' +
+      '<button class="btn primary sm" data-act="save-settings">保存</button></div>';
+
+    /* 王国 */
+    html += '<div class="card"><div class="card-head"><h3>国号</h3></div>' +
+      '<div class="field"><label>国号</label><input type="text" id="k-name" value="' + esc(k.name) + '"></div>' +
+      '<div class="field"><label>自称</label><input type="text" id="k-title" value="' + esc(k.emperorTitle) + '"></div>' +
+      '<button class="btn primary sm" data-act="save-kingdom">保存</button></div>';
+
+    html += '<div class="card flat"><p class="muted">大永劫 · 本地版。' +
+      '两代协议是方法，王国只是外壳——真正在起作用的是你点下那个按钮的次数。</p></div>';
+    return html;
+  };
+
+  function kv(k, v) {
+    return '<div class="li"><span class="nm">' + esc(k) + '</span>' +
+      '<span class="muted">' + esc(v) + '</span></div>';
+  }
+  function num(id, label, val, hint) {
+    return '<div class="field"><label>' + label + '</label>' +
+      '<input type="number" id="' + id + '" value="' + esc(val) + '">' +
+      (hint ? '<div class="hint">' + hint + '</div>' : '') + '</div>';
+  }
+  function date(id, label, val, hint) {
+    return '<div class="field"><label>' + label + '</label>' +
+      '<input type="date" id="' + id + '" value="' + esc(val) + '">' +
+      (hint ? '<div class="hint">' + hint + '</div>' : '') + '</div>';
+  }
+})(window);
+
+</script>
+<script>
+/* 大永劫 · 应用层：状态、路由、动作、计时、持久化 */
+(function (root) {
+  'use strict';
+  var R = root.DYJ_Rules;
+  var V = root.DYJ_V;
+  var esc = V.esc;
+  var KEY = 'dayongjie.v2';
+  var KEY_V1 = 'dayongjie.v1';
+
+  var App = root.DYJ_App = {
+    state: null,
+    ui: {
+      page: 'start', groupId: null, selectedDay: null, pick: null,
+      rangeKind: 'month', rangeRef: null, customRange: null, heatMonth: null
+    }
+  };
+
+  App.now = function () { return Date.now(); };
+
+  /* ---------------- 存档迁移 ---------------- */
+
+  function upgradeV1(o) {
+    var d = R.defaultState();
+    var A = R.TROOP_ALIAS, GA = R.GROUP_ALIAS;
+    // 兵种 id 迁移 + 数据合并
+    var carried = {};
+    (o.troops || []).forEach(function (t) {
+      var nid = A[t.id] || t.id;
+      var c = carried[nid] = carried[nid] || { focusMinutes: 0, sessions: 0, fatigue: false, consecutiveAborts: 0 };
+      c.focusMinutes += t.focusMinutes || 0;
+      c.sessions += t.sessions || 0;
+      c.fatigue = c.fatigue || !!t.fatigue;
+      c.consecutiveAborts = Math.max(c.consecutiveAborts, t.consecutiveAborts || 0);
+    });
+    o.troops = d.troops.map(function (t) {
+      var c = carried[t.id];
+      return c ? Object.assign({}, t, c) : t;
+    });
+    // 组 id 迁移
+    var gmap = {};
+    (o.policyGroups || []).forEach(function (g) {
+      gmap[g.id] = GA[g.id] || g.id;
+    });
+    var seen = {};
+    o.policyGroups = (o.policyGroups || []).map(function (g) {
+      var nid = gmap[g.id];
+      var def = d.policyGroups.find(function (x) { return x.id === nid; });
+      var ng = Object.assign({}, g, { id: nid, title: g.title || (def ? def.title : '') });
+      if (def) { ng.name = def.name; ng.title = def.title; ng.scope = def.scope; }
+      if (seen[nid]) return null;
+      seen[nid] = 1;
+      return ng;
+    }).filter(Boolean);
+    d.policyGroups.forEach(function (g) { if (!seen[g.id]) o.policyGroups.push(g); });
+    // 节点 / 记录 / 目标
+    (o.policyNodes || []).forEach(function (n) { n.groupId = gmap[n.groupId] || n.groupId; });
+    (o.focusLogs || []).forEach(function (l) { l.troopId = A[l.troopId] || l.troopId; });
+    (o.targets || []).forEach(function (t) {
+      t.troopIds = (t.troopIds || []).map(function (id) { return A[id] || id; });
+    });
+    Object.keys(o.dayRecords || {}).forEach(function (k) {
+      var gs = o.dayRecords[k].groupStates || {};
+      var ng = {};
+      Object.keys(gs).forEach(function (id) { ng[gmap[id] || id] = gs[id]; });
+      o.dayRecords[k].groupStates = ng;
+    });
+    // 王国字段
+    var k = o.kingdom || {};
+    var logs = (o.focusLogs || []).filter(function (l) { return l.result === 'completed'; });
+    var days = {};
+    logs.forEach(function (l) { days[l.logicalDay] = 1; });
+    var sorted = Object.keys(days).sort();
+    var best = 0, run = 0, prev = null;
+    sorted.forEach(function (dd) {
+      run = (prev && R.daysBetween(prev, dd) === 1) ? run + 1 : 1;
+      best = Math.max(best, run);
+      prev = dd;
+    });
+    var last = sorted[sorted.length - 1] || null;
+    var streak = 0;
+    if (last) {
+      streak = 1;
+      for (var i = sorted.length - 1; i > 0; i--) {
+        if (R.daysBetween(sorted[i - 1], sorted[i]) === 1) streak++; else break;
+      }
+    }
+    var attempts = (o.focusLogs || []).length;
+    o.kingdom = {
+      name: k.name || d.kingdom.name,
+      emperorTitle: k.emperorTitle || d.kingdom.emperorTitle,
+      lifetimeFocusMinutes: k.lifetimeFocusMinutes || 0,
+      totalSessions: k.totalSessions || logs.length,
+      attempts: Math.max(attempts, k.totalSessions || 0),
+      focusStreak: streak, bestFocusStreak: best, lastFocusDay: last,
+      rankId: k.rankId || d.kingdom.rankId,
+      highestRankId: k.highestRankId || k.rankId || d.kingdom.highestRankId,
+      honors: (k.honors || []).filter(function (id) {
+        return R.HONORS.some(function (h) { return h.id === id; });
+      }),
+      recoveryUntil: null, recoveryReason: null,
+      chainNo: k.chainNo || 0, chainBest: k.chainBest || 0,
+      createdAt: k.createdAt || Date.now()
+    };
+    if (o.kingdom.lifetimeFocusMinutes >= 6000 && o.kingdom.honors.indexOf('hundred') < 0) o.kingdom.honors.push('hundred');
+    if (o.kingdom.lifetimeFocusMinutes >= 600 && o.kingdom.honors.indexOf('tenhours') < 0) o.kingdom.honors.push('tenhours');
+    o.schemaVersion = 2;
+    return o;
+  }
+
+  function migrate(o) {
+    if (!o || typeof o !== 'object') return R.defaultState();
+    var d = R.defaultState();
+    if ((o.schemaVersion || 1) < 2) { try { o = upgradeV1(o); } catch (e) { console.error('迁移失败，保留原数据', e); } }
+    o.schemaVersion = 2;
+    ['troops', 'targets', 'policyGroups', 'policyNodes', 'focusLogs', 'reservations',
+      'rulings', 'permits', 'settlements', 'quotaLogs', 'audit'].forEach(function (k) {
+        if (!Array.isArray(o[k])) o[k] = d[k];
+      });
+    if (!o.dayRecords || typeof o.dayRecords !== 'object') o.dayRecords = {};
+    o.settings = Object.assign({}, d.settings, o.settings || {});
+    if (!o.meta) o.meta = d.meta;
+    if (!o.runtime) o.runtime = {};
+    o.kingdom = Object.assign({}, d.kingdom, o.kingdom || {});
+    // 兵种表以代码为准，保留累计数据
+    o.troops = d.troops.map(function (t) {
+      var old = o.troops.find(function (x) { return x.id === t.id; });
+      return old ? Object.assign({}, t, {
+        focusMinutes: old.focusMinutes || 0, sessions: old.sessions || 0,
+        fatigue: !!old.fatigue, consecutiveAborts: old.consecutiveAborts || 0
+      }) : t;
+    });
+    return o;
+  }
+
+  /* ---------------- 存储可用性自检 ----------------
+   * 某些浏览器（尤其是手机上的 file:// 页面）会禁用 localStorage。
+   * 必须当场发现并告诉用户，否则会白记一个月才发现数据没保存。 */
+  function checkStorage() {
+    try {
+      var k = '__dyj_probe__';
+      localStorage.setItem(k, '1');
+      var ok = localStorage.getItem(k) === '1';
+      localStorage.removeItem(k);
+      return ok;
+    } catch (e) { return false; }
+  }
+  App.storageOk = true;
+
+  App.load = function () {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) {
+        var v1 = localStorage.getItem(KEY_V1);
+        if (v1) return migrate(JSON.parse(v1));
+        return R.defaultState();
+      }
+      return migrate(JSON.parse(raw));
+    } catch (e) {
+      console.error(e);
+      return R.defaultState();
+    }
+  };
+
+  var saveTimer = null;
+  App.save = function (immediate) {
+    function write() {
+      saveTimer = null;
+      try { localStorage.setItem(KEY, JSON.stringify(App.state)); }
+      catch (e) { App.toast('保存失败：' + e.message + '，请立刻导出备份。'); }
+    }
+    if (immediate) { if (saveTimer) clearTimeout(saveTimer); write(); return; }
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(write, 250);
+  };
+
+  /* ---------------- 提示 ---------------- */
+  App.toast = function (msg, ms) {
+    var el = document.getElementById('toast');
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('on');
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.classList.remove('on'); }, ms || 2600);
+  };
+
+  /* ---------------- 弹窗 ---------------- */
+  App.modal = function (html) {
+    document.getElementById('modal-root').innerHTML =
+      '<div class="mask" data-act="mask"><div class="modal">' + html + '</div></div>';
+  };
+  App.closeModal = function () { document.getElementById('modal-root').innerHTML = ''; };
+  App.modalOpen = function () { return !!document.querySelector('#modal-root .mask'); };
+
+  function val(id) { var el = document.getElementById(id); return el ? el.value : ''; }
+  function num(id, dflt) { var n = parseInt(val(id), 10); return isNaN(n) ? dflt : n; }
+
+  /* ---------------- 渲染 ---------------- */
+  var PAGES = [
+    { id: 'start', label: '开始' },
+    { id: 'stats', label: '统计' },
+    { id: 'rules', label: '国策' },
+    { id: 'mine', label: '我的' }
+  ];
+
+  App.render = function () {
+    var s = App.state, now = App.now();
+    document.getElementById('topbar').innerHTML = V.renderTopbar(s);
+    var html;
+    if (App.ui.page === 'start') html = V.renderStart(s, now);
+    else if (App.ui.page === 'stats') html = V.renderStats(s, now, App.ui);
+    else if (App.ui.page === 'heat') html = V.renderHeatDetail(s, now, App.ui);
+    else if (App.ui.page === 'rules') html = V.renderPolicy(s, now, App.ui);
+    else html = V.renderMine(s, now, App.ui);
+    document.getElementById('view').innerHTML = html;
+    document.getElementById('nav').innerHTML = '<div class="nav-in">' + PAGES.map(function (p) {
+      var on = App.ui.page === p.id || (p.id === 'stats' && App.ui.page === 'heat');
+      return '<button class="' + (on ? 'on' : '') + '" data-act="go:' + p.id + '">' + p.label + '</button>';
+    }).join('') + '</div>';
+  };
+
+  App.go = function (page) {
+    App.ui.page = page;
+    if (page === 'rules' && !App.ui.groupId) App.ui.groupId = App.state.policyGroups[0] && App.state.policyGroups[0].id;
+    App.render();
+    window.scrollTo({ top: 0 });
+  };
+
+  App.refresh = function () {
+    var out = R.runSettlement(App.state, App.now());
+    out.alerts.forEach(function (a, i) { if (i < 2) App.toast(a, 4200); });
+    if (out.recoveryStarted) {
+      App.modal('<h2>欢迎回来</h2>' +
+        '<p>你有几天没记录了。这很正常，不用自责——断档本身说明之前的路径还不够稳。</p>' +
+        '<div class="alert info">接下来 7 天是<b>重建期</b>：国策不会因为你没做到而崩坏，' +
+        '你要做的只有一件事——<b>坐 5 分钟</b>。</div>' +
+        '<div class="foot"><button class="btn primary" data-act="close-modal">好</button></div>');
+    }
+    App.save();
+    App.render();
+  };
+
+  /* ---------------- 计时器 ---------------- */
+  function mmss(sec) {
+    sec = Math.max(0, sec);
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+  function tick() {
+    var s = App.state, now = App.now();
+    var sess = s.runtime && s.runtime.activeSession;
+    if (sess) {
+      var el = document.getElementById('live-session');
+      if (el) {
+        var sec = Math.floor((now - sess.startedAt) / 1000);
+        el.textContent = mmss(sec);
+        if (sec > sess.plannedMinutes * 60) el.classList.add('over');
+      }
+    }
+    var resv = s.runtime && s.runtime.activeReservation;
+    if (resv) {
+      var el2 = document.getElementById('live-reservation');
+      if (el2) {
+        var left = Math.floor((resv.deadlineAt - now) / 1000);
+        el2.textContent = left > 0 ? mmss(left) : '00:00';
+        if (left <= 0) { el2.classList.add('blink'); }
+      }
+      if (now > resv.deadlineAt + 60000 && resv.status === 'pending') {
+        R.lapseReservation(s, now);
+        R.openRuling(s, 'suspected_violation', '打响指后没能坐上座位', now, []);
+        App.save(true); App.render();
+      }
+    }
+  }
+
+  /* ---------------- 动作 ---------------- */
+
+  function startNow(troopId, mins, taskName) {
+    var s = App.state, now = App.now();
+    if (s.runtime && s.runtime.activeSession) { App.toast('已经有一个在进行中了'); return; }
+    mins = Math.max(1, mins || s.settings.defaultPlanMinutes || 10);
+    if (R.startSession(s, troopId, mins, null, now, taskName)) {
+      App.closeModal(); App.save(true); App.render();
+      App.toast(mins + ' 分钟，开始。');
+    }
+  }
+
+  var ACTS = {
+    'go': function (p) { App.closeModal(); App.go(p); },
+    'close-modal': function () { App.closeModal(); },
+    'mask': function () { App.closeModal(); },
+
+    /* --- 开始 --- */
+    'quick-start': function () {
+      var s = App.state;
+      startNow(s.settings.lastTroopId, s.settings.defaultPlanMinutes);
+    },
+    'pick-troop': function () {
+      App.ui.pick = { troopId: App.state.settings.lastTroopId, minutes: App.state.settings.defaultPlanMinutes };
+      App.modal(V.troopPicker(App.state, App.now(), App.state.settings.planPresets));
+    },
+    'choose-troop': function (id) {
+      App.ui.pick = App.ui.pick || {};
+      App.ui.pick.troopId = id;
+      App.modal(V.troopPicker(App.state, App.now(), App.state.settings.planPresets));
+    },
+    'choose-min': function (m) {
+      App.ui.pick = App.ui.pick || {};
+      App.ui.pick.minutes = parseInt(m, 10);
+      App.modal(V.troopPicker(App.state, App.now(), App.state.settings.planPresets));
+    },
+    'start-chosen': function () {
+      var p = App.ui.pick || {};
+      var custom = parseInt(val('f-custom'), 10);
+      var mins = isNaN(custom) ? (p.minutes || App.state.settings.defaultPlanMinutes) : custom;
+      startNow(p.troopId || App.state.settings.lastTroopId, mins, val('f-task'));
+    },
+
+    /* --- 国策确认 --- */
+    'toggle-node': function (nodeId) {
+      var s = App.state, now = App.now();
+      var day = R.todayKey(s, now);
+      var node = s.policyNodes.find(function (n) { return n.id === nodeId; });
+      if (!node) return;
+      var st = R.nodeStateFor(s, day, node);
+      var next = st === 'lit' ? 'out' : 'lit';
+      if (!R.confirmNode(s, day, nodeId, next, now)) App.toast('今天已经结算了，明天再说。');
+      else App.save(true);
+      App.render();
+    },
+    'confirm-all': function () {
+      var s = App.state, now = App.now();
+      var n = R.confirmAll(s, R.todayKey(s, now), now);
+      App.save(true); App.render();
+      App.toast(n ? '全部记为做到了' : '没有需要确认的');
+    },
+
+    /* --- 预约 --- */
+    'reserve': function () {
+      var r = R.makeReservation(App.state, '响指', App.now());
+      App.save(true); App.render();
+      if (r) App.toast('打响指了。14 分 30 秒内坐下就行。');
+    },
+    'seat': function () {
+      var res = R.seatReservation(App.state, App.now());
+      App.save(true); App.render();
+      if (res.ok) App.toast(res.late ? '坐下了，虽然超了点时间。' : '坐下了。');
+    },
+    'lapse': function () {
+      R.lapseReservation(App.state, App.now());
+      R.openRuling(App.state, 'suspected_violation', '打响指后没能坐上座位', App.now(), []);
+      App.save(true); App.render();
+      App.toast('记下了。要不要把它变成一条正式规则？');
+    },
+
+    /* --- 结束专注 --- */
+    'end-complete': function () {
+      var s = App.state, now = App.now();
+      var sess = s.runtime.activeSession;
+      var elapsed = Math.round((now - sess.startedAt) / 60000);
+      App.modal('<h2>完成</h2>' +
+        '<p class="muted">计划 ' + sess.plannedMinutes + ' 分钟，实际过了 ' + elapsed + ' 分钟。</p>' +
+        '<div class="field"><label>计进去多少分钟</label>' +
+        '<input type="number" id="f-actual" value="' + Math.max(1, Math.min(elapsed, sess.plannedMinutes)) + '" min="1" max="1440"></div>' +
+        '<div class="field"><label>这次具体做了什么（可选，会出现在明细里）</label>' +
+        '<input type="text" id="f-task" value="' + esc(sess.taskName || '') + '" placeholder="深呼吸并按动笔芯"></div>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">继续</button>' +
+        '<button class="btn primary" data-act="end-complete-ok">确认完成</button></div>');
+    },
+    'end-complete-ok': function () {
+      var mins = Math.max(1, num('f-actual', 1));
+      var log = R.endSession(App.state, 'completed', App.now(), mins, val('f-task'));
+      App.closeModal(); App.save(true); App.render();
+      if (log) App.toast('记下了：' + log.actualMinutes + ' 分钟 · 链条 #' + log.chainNo);
+    },
+    'end-abort': function () {
+      App.modal('<h2>中断</h2>' +
+        '<div class="alert info">链条归零，但已经坐下的分钟数照样记在这件事的累计里——它没有白费。</div>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">继续做</button>' +
+        '<button class="btn danger" data-act="end-abort-ok">确认中断</button></div>');
+    },
+    'end-abort-ok': function () {
+      var log = R.endSession(App.state, 'aborted', App.now());
+      App.closeModal(); App.save(true); App.render();
+      if (log) App.toast('记下了，' + log.actualMinutes + ' 分钟。下次试试 5 分钟。');
+    },
+    'open-downgrade': function () {
+      App.modal('<h2>降级启动</h2>' +
+        '<p>把目标改小，先动起来。不算失败。</p>' +
+        '<div class="row tight" style="margin-bottom:12px">' +
+        [5, 10, 15].map(function (m) { return '<button class="btn sm" data-act="dg:' + m + '">' + m + ' 分钟</button>'; }).join('') +
+        '</div>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">取消</button></div>');
+    },
+    'dg': function (m) {
+      var r = R.downgradeSession(App.state, parseInt(m, 10), App.now());
+      if (!r.ok) { App.toast(r.reason); return; }
+      App.closeModal(); App.save(true); App.render();
+      App.toast('改成 ' + m + ' 分钟了，先坐下去。');
+    },
+
+    /* --- 国策 CRUD --- */
+    'pick-group': function (gid) { App.ui.groupId = gid; App.render(); },
+    'add-node': function (gid) { nodeForm(null, gid); },
+    'add-sub': function (pid) {
+      var p = App.state.policyNodes.find(function (n) { return n.id === pid; });
+      nodeForm(null, p ? p.groupId : null, pid);
+    },
+    'edit-node': function (id) { nodeForm(id); },
+    'save-node': function (id, forcedParent) {
+      var s = App.state, now = App.now();
+      var name = (val('f-name') || '').trim();
+      if (!name) { App.toast('写个名字吧'); return; }
+      var chosenParent = val('f-parent') || forcedParent || null;
+      var chosenGroup = val('f-group');
+      if (!chosenGroup && chosenParent) {
+        var pg = s.policyNodes.find(function (x) { return x.id === chosenParent; });
+        if (pg) chosenGroup = pg.groupId;
+      }
+      if (!chosenGroup) chosenGroup = App.ui.groupId || (s.policyGroups[0] && s.policyGroups[0].id);
+      var data = {
+        name: name, type: val('f-type') || 'semi', groupId: chosenGroup,
+        parentId: chosenParent, trigger: (val('f-trigger') || '').trim(),
+        note: (val('f-note') || '').trim(), isRoot: !!document.getElementById('f-root').checked
+      };
+      var trialDays = num('f-trial', 3);
+      var today = R.logicalDay(now, s.settings.dayBoundaryHour);
+      if (id) {
+        var n = s.policyNodes.find(function (x) { return x.id === id; });
+        if (data.parentId === id) data.parentId = null;
+        if (data.groupId !== n.groupId) data.parentId = null;
+        Object.assign(n, data);
+        n.trialEndsAt = trialDays > 0 ? R.addDays(today, trialDays) : null;
+      } else {
+        if (data.parentId) {
+          var par = s.policyNodes.find(function (x) { return x.id === data.parentId; });
+          if (par) data.groupId = par.groupId;
+        }
+        s.policyNodes.push(Object.assign({
+          id: R.uid('n'), status: 'lit', createdAt: now,
+          trialEndsAt: trialDays > 0 ? R.addDays(today, trialDays) : null,
+          trialFails: 0, internalization: 0, streak: 0, bestStreak: 0, totalLit: 0,
+          lastConfirmedDay: null, useCount: 0
+        }, data));
+      }
+      App.ui.groupId = data.groupId;
+      App.closeModal(); App.save(true); App.render();
+      App.toast(id ? '改好了' : '加好了。前几天做不到也不算崩塌。');
+    },
+    'del-node': function (id) {
+      var s = App.state, n = s.policyNodes.find(function (x) { return x.id === id; });
+      if (!n) return;
+      var kids = s.policyNodes.filter(function (x) { return x.parentId === id && x.status !== 'removed'; }).length;
+      App.modal('<h2>删掉「' + esc(n.name) + '」？</h2>' +
+        (kids ? '<p>它下面的 ' + kids + ' 条会一起删掉。</p>' : '') +
+        '<p class="muted">历史最长连续 ' + (n.bestStreak || 0) + ' 天会留在记录里。</p>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">算了</button>' +
+        '<button class="btn danger" data-act="del-node-ok:' + id + '">删掉</button></div>');
+    },
+    'del-node-ok': function (id) {
+      var s = App.state, n = s.policyNodes.find(function (x) { return x.id === id; });
+      if (n) { R.softDeleteSubtree(s, id); n.status = 'removed'; n.removedAt = App.now(); }
+      App.closeModal(); App.save(true); App.render();
+    },
+    'reset-internal': function (id) {
+      var n = App.state.policyNodes.find(function (x) { return x.id === id; });
+      if (!n) return;
+      n.status = 'lit'; n.internalization = 60;
+      App.save(true); App.render();
+    },
+    'add-group': function () { groupForm(null); },
+    'edit-group': function (id) { groupForm(id); },
+    'save-group': function (id) {
+      var s = App.state;
+      var name = (val('g-name') || '').trim();
+      if (!name) { App.toast('写个组名吧'); return; }
+      var mode = val('g-scope');
+      var troopIds = Array.prototype.slice.call(document.querySelectorAll('.g-troop:checked')).map(function (c) { return c.value; });
+      var scope = { mode: mode, weight: Math.max(0, Math.min(1, parseFloat(val('g-weight')) || 0.5)) };
+      if (mode === 'troops') scope.troopIds = troopIds;
+      var data = {
+        name: name, title: (val('g-title') || '').trim(), scope: scope,
+        noCollapse: !!document.getElementById('g-nocollapse').checked
+      };
+      if (id) Object.assign(s.policyGroups.find(function (x) { return x.id === id; }), data);
+      else {
+        var g = Object.assign({
+          id: R.uid('g'), tolerance: 1, state: 'stable', locked: false,
+          shakenDays: 0, cleanDays: 0, frozenUntil: null, frozenReason: null
+        }, data);
+        s.policyGroups.push(g);
+        App.ui.groupId = g.id;
+      }
+      App.closeModal(); App.save(true); App.render();
+    },
+    'del-group': function (id) {
+      var g = App.state.policyGroups.find(function (x) { return x.id === id; });
+      if (!g) return;
+      var n = App.state.policyNodes.filter(function (x) { return x.groupId === id && x.status !== 'removed'; }).length;
+      App.modal('<h2>删掉「' + esc(g.name) + '」？</h2><p>组里 ' + n + ' 条国策会一起删掉。</p>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">算了</button>' +
+        '<button class="btn danger" data-act="del-group-ok:' + id + '">删掉</button></div>');
+    },
+    'del-group-ok': function (id) {
+      var s = App.state;
+      s.policyNodes.forEach(function (n) { if (n.groupId === id) n.status = 'removed'; });
+      s.policyGroups = s.policyGroups.filter(function (g) { return g.id !== id; });
+      App.ui.groupId = s.policyGroups[0] && s.policyGroups[0].id;
+      App.closeModal(); App.save(true); App.render();
+    },
+    'freeze': function (id) {
+      var g = App.state.policyGroups.find(function (x) { return x.id === id; });
+      if (!g) return;
+      App.modal('<h2>冻结「' + esc(g.name) + '」</h2>' +
+        '<p class="muted">生病、考试周、出门在外时用。冻结期间这组不算熄灭。</p>' +
+        '<div class="field"><label>几天</label><input type="number" id="fr-days" value="3" min="1" max="60"></div>' +
+        '<div class="field"><label>一句原因</label><input type="text" id="fr-reason" placeholder="考试周"></div>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">取消</button>' +
+        '<button class="btn primary" data-act="freeze-ok:' + id + '">冻结</button></div>');
+    },
+    'freeze-ok': function (id) {
+      var s = App.state, now = App.now();
+      var g = s.policyGroups.find(function (x) { return x.id === id; });
+      var days = Math.max(1, num('fr-days', 3));
+      var reason = (val('fr-reason') || '').trim() || '（没写原因）';
+      g.frozenUntil = R.dayStartTs(R.todayKey(s, now), 0) + days * 86400000;
+      g.frozenReason = reason;
+      var r = R.openRuling(s, 'freeze', g.name + ' 冻结 ' + days + ' 天：' + reason, now, []);
+      r.decision = 'permitted'; r.resolvedAt = now;
+      App.closeModal(); App.save(true); App.render();
+      App.toast('冻结到 ' + R.logicalDay(g.frozenUntil, s.settings.dayBoundaryHour));
+    },
+    'unfreeze': function (id) {
+      var g = App.state.policyGroups.find(function (x) { return x.id === id; });
+      if (g) { g.frozenUntil = null; g.frozenReason = null; }
+      App.save(true); App.render();
+    },
+    'unlock': function (id) {
+      var g = App.state.policyGroups.find(function (x) { return x.id === id; });
+      if (g) { g.locked = false; if (g.state === 'broken') g.state = 'shaken'; }
+      App.save(true); App.render();
+      App.toast('解锁了。动摇状态还在，注意这一点。');
+    },
+
+    /* --- 元规则 --- */
+    'quota': function (n) {
+      var s = App.state, day = R.todayKey(s, App.now());
+      var rec = R.ensureDay(s, day);
+      n = parseInt(n, 10);
+      rec.entertainmentMinutes = n === 0 ? 0 : Math.max(0, (rec.entertainmentMinutes || 0) + n);
+      if (rec.entertainmentMinutes > s.settings.entertainmentQuotaMinutes) {
+        var has = s.rulings.some(function (r) { return r.logicalDay === day && r.kind === 'quota_exceeded' && !r.decision; });
+        if (!has) { R.openRuling(s, 'quota_exceeded', '娱乐时间超出每天配额', App.now(), []); App.toast('超了。要不要把它定成一条正式规则？'); }
+      }
+      App.save(true); App.render();
+    },
+    'open-ruling': function () {
+      App.modal('<h2>发起一次判断</h2>' +
+        '<p class="muted">只能二选一，没有第三种：判定违规（清零重来），或者判定允许（从此永久合法）。</p>' +
+        '<div class="field"><label>是什么事</label><input type="text" id="r-subject" placeholder="在床上刷短视频"></div>' +
+        '<div class="field"><label>关联哪几条国策（选「违规」时会被删掉）</label>' +
+        '<select id="r-nodes" multiple size="5">' +
+        App.state.policyNodes.filter(function (n) { return n.status !== 'removed'; })
+          .map(function (n) { return '<option value="' + n.id + '">' + esc(n.name) + '</option>'; }).join('') +
+        '</select></div>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">取消</button>' +
+        '<button class="btn primary" data-act="open-ruling-ok">记下来</button></div>');
+    },
+    'open-ruling-ok': function () {
+      var subject = (val('r-subject') || '').trim();
+      if (!subject) { App.toast('写一下是什么事'); return; }
+      var ids = Array.prototype.slice.call(document.querySelectorAll('#r-nodes option:checked')).map(function (o) { return o.value; });
+      R.openRuling(App.state, 'suspected_violation', subject, App.now(), ids);
+      App.closeModal(); App.save(true); App.go('start');
+      App.toast('记下了。在上面的提示条里做判断。');
+    },
+    'ruling-permit': function (id) {
+      var r = App.state.rulings.find(function (x) { return x.id === id; });
+      if (!r) return;
+      App.modal('<h2>确认：永久允许</h2>' +
+        '<div class="alert warn">从此「' + esc(r.subject) + '」<b>永久合法</b>，它不再算违规。这条不能撤销。</div>' +
+        '<p class="muted">你放弃的是未来对这件事的管辖权。如果只是今天想放松，选「判定违规」清链重来，长期看更划算。</p>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">再想想</button>' +
+        '<button class="btn primary" data-act="ruling-permit-ok:' + id + '">确定，永久允许</button></div>');
+    },
+    'ruling-permit-ok': function (id) {
+      R.resolveRuling(App.state, id, 'permitted', '', App.now());
+      App.closeModal(); App.save(true); App.render();
+      App.toast('记录下来了。');
+    },
+    'ruling-reset': function (id) {
+      var r = App.state.rulings.find(function (x) { return x.id === id; });
+      if (!r) return;
+      App.modal('<h2>判定违规</h2><p>「' + esc(r.subject) + '」算违规。</p>' +
+        '<div class="field"><label>一句话复盘（可选）</label>' +
+        '<input type="text" id="r-note" placeholder="进门直接躺下了，没先洗澡"></div>' +
+        '<p class="muted">关联的国策会被删掉，历史最长连续天数保留。</p>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">取消</button>' +
+        '<button class="btn danger" data-act="ruling-reset-ok:' + id + '">确认</button></div>');
+    },
+    'ruling-reset-ok': function (id) {
+      R.resolveRuling(App.state, id, 'reset', (val('r-note') || '').trim(), App.now());
+      App.closeModal(); App.save(true); App.render();
+      App.toast('记下了。');
+    },
+
+    /* --- 统计页 --- */
+    'open-heat': function () {
+      var today = R.todayKey(App.state, App.now());
+      if (!App.ui.heatMonth) App.ui.heatMonth = today.slice(0, 8) + '01';
+      App.ui.selectedDay = App.ui.selectedDay || today;
+      App.ui.page = 'heat';
+      App.render();
+      window.scrollTo({ top: 0 });
+    },
+    'heat-month': function (n) {
+      var today = R.todayKey(App.state, App.now());
+      var cur = App.ui.heatMonth || (today.slice(0, 8) + '01');
+      App.ui.heatMonth = R.shiftMonth(cur, parseInt(n, 10));
+      App.render();
+    },
+    'pick-day': function (d) {
+      if (App.ui.page === 'stats') {
+        App.ui.heatMonth = d.slice(0, 8) + '01';
+        App.ui.selectedDay = d;
+        App.ui.page = 'heat';
+      } else {
+        App.ui.selectedDay = d;
+      }
+      App.render();
+    },
+    'range-kind': function (k) {
+      App.ui.rangeKind = k;
+      App.ui.rangeRef = R.todayKey(App.state, App.now());
+      App.render();
+    },
+    'range-shift': function (n) {
+      var today = R.todayKey(App.state, App.now());
+      var ref = App.ui.rangeRef || today;
+      n = parseInt(n, 10);
+      if (App.ui.rangeKind === 'month') ref = R.shiftMonth(ref.slice(0, 8) + '01', n);
+      else if (App.ui.rangeKind === 'week') ref = R.addDays(ref, 7 * n);
+      else ref = R.addDays(ref, n);
+      App.ui.rangeRef = ref;
+      App.render();
+    },
+    'range-now': function () {
+      App.ui.rangeKind = 'month';
+      App.ui.rangeRef = R.todayKey(App.state, App.now());
+      App.render();
+    },
+    'range-apply': function () {
+      var f = val('rg-from'), t = val('rg-to');
+      if (f && t) { App.ui.customRange = { from: f, to: t }; App.render(); }
+    },
+    'heatmode': function () {
+      var st = App.state.settings;
+      st.heatmapMode = st.heatmapMode === 'adaptive' ? 'fixed' : 'adaptive';
+      App.save(true); App.render();
+    },
+    'edit-targets': function () {
+      App.modal('<h2>目标</h2><p class="muted">每行格式：名称 | 每月目标分钟 | 颜色 | 关联的事（逗号分隔的 id）</p>' +
+        App.state.targets.map(function (t, i) {
+          return '<div class="field"><label>' + esc(t.name) + '</label>' +
+            '<input type="text" id="tg-' + i + '" value="' +
+            esc(t.name + '|' + t.monthlyGoalMinutes + '|' + t.color + '|' + (t.troopIds || []).join(',')) + '"></div>';
+        }).join('') +
+        '<div class="field"><label>新增一行（留空忽略）</label><input type="text" id="tg-new" placeholder="准备托福|1800|#2E7D32|fuxi"></div>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">取消</button>' +
+        '<button class="btn primary" data-act="save-targets">保存</button></div>');
+    },
+    'save-targets': function () {
+      var s = App.state, out = [];
+      s.targets.forEach(function (t, i) {
+        var v = val('tg-' + i);
+        if (!v) return;
+        var p = v.split('|');
+        out.push({
+          id: t.id, name: (p[0] || t.name).trim(),
+          monthlyGoalMinutes: parseInt(p[1], 10) || t.monthlyGoalMinutes,
+          color: (p[2] || t.color).trim(),
+          troopIds: (p[3] || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean)
+        });
+      });
+      var nv = val('tg-new');
+      if (nv) {
+        var q = nv.split('|');
+        out.push({
+          id: R.uid('t'), name: (q[0] || '新目标').trim(),
+          monthlyGoalMinutes: parseInt(q[1], 10) || 600,
+          color: (q[2] || '#4CAF50').trim(),
+          troopIds: (q[3] || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean)
+        });
+      }
+      s.targets = out;
+      App.closeModal(); App.save(true); App.render();
+    },
+
+    /* --- 设置 --- */
+    'save-kingdom': function () {
+      var k = App.state.kingdom;
+      k.name = (val('k-name') || '大永劫').trim();
+      k.emperorTitle = (val('k-title') || '').trim();
+      App.save(true); App.render();
+      App.toast('保存了');
+    },
+    'save-settings': function () {
+      var st = App.state.settings;
+      st.dayBoundaryHour = Math.max(0, Math.min(12, num('s-boundary', 4)));
+      st.settlementHour = Math.max(12, Math.min(23, num('s-settle', 23)));
+      st.defaultPlanMinutes = Math.max(1, num('s-plan', 10));
+      st.downgradePerDayLimit = Math.max(0, num('s-degrade', 2));
+      st.entertainmentQuotaMinutes = Math.max(0, num('s-quota', 120));
+      st.newbieProtectionUntil = val('s-newbie') || st.newbieProtectionUntil;
+      var tt = document.getElementById('s-titles');
+      if (tt) st.showTitles = !!tt.checked;
+      App.save(true); App.render();
+      App.toast('保存了');
+    },
+    'export': function () {
+      var s = App.state;
+      s.meta.lastExportAt = App.now();
+      var data = JSON.stringify(s);
+      var blob = new Blob([data], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = '大永劫备份_' + R.todayKey(s, App.now()) + '.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      App.save(true); App.render();
+      App.toast('导出完成（' + Math.round(data.length / 1024) + ' KB）');
+    },
+    'import': function () {
+      var inp = document.createElement('input');
+      inp.type = 'file'; inp.accept = '.json,application/json';
+      inp.onchange = function () {
+        var f = inp.files && inp.files[0];
+        if (!f) return;
+        var r = new FileReader();
+        r.onload = function () {
+          try {
+            var o = JSON.parse(r.result);
+            if (!o || !o.kingdom) throw new Error('这不像本软件的备份');
+            App.state = migrate(o);
+            App.state.audit.push({ at: App.now(), type: 'import', detail: { file: f.name } });
+            App.save(true); App.go('start');
+            App.toast('导入完成');
+          } catch (e) { App.toast('导入失败：' + e.message, 4200); }
+        };
+        r.readAsText(f);
+      };
+      inp.click();
+    },
+    'wipe': function () {
+      App.modal('<h2>清空全部数据</h2>' +
+        '<div class="alert warn">所有记录、国策、军衔都会消失，不能恢复。先导出备份吧。</div>' +
+        '<div class="foot"><button class="btn" data-act="close-modal">取消</button>' +
+        '<button class="btn danger" data-act="wipe-ok">确认清空</button></div>');
+    },
+    'wipe-ok': function () {
+      App.state = R.defaultState();
+      App.save(true); App.closeModal(); App.go('start');
+      App.toast('重新开始。');
+    }
+  };
+
+  /* ---------------- 表单 ---------------- */
+  function nodeForm(id, groupId, parentId) {
+    var s = App.state;
+    var n = id ? s.policyNodes.find(function (x) { return x.id === id; }) : null;
+    var gid = n ? n.groupId : (groupId || s.policyGroups[0].id);
+    var pid = n ? n.parentId : (parentId || null);
+    var same = s.policyNodes.filter(function (x) {
+      return x.groupId === gid && x.status !== 'removed' && (!id || x.id !== id);
+    });
+    App.modal('<h2>' + (id ? '编辑国策' : '加一条国策') + '</h2>' +
+      '<div class="field"><label>做什么</label><input type="text" id="f-name" value="' + esc(n ? n.name : '') +
+      '" placeholder="进家门 15 分钟内换运动服"></div>' +
+      '<div class="field"><label>类型</label><select id="f-type">' +
+      R.NODE_TYPE_ORDER.map(function (t) {
+        return '<option value="' + t + '"' + (n && n.type === t ? ' selected' : '') + '>' +
+          R.NODE_TYPES[t].name + ' — ' + R.NODE_TYPES[t].desc + '</option>';
+      }).join('') + '</select>' +
+      '<div class="hint">被动 &gt; 半被动 &gt; 主动。能用被动就别用主动，决策负担差很多。</div></div>' +
+      '<div class="field"><label>属于哪一组</label><select id="f-group">' +
+      s.policyGroups.map(function (g) {
+        return '<option value="' + g.id + '"' + (g.id === gid ? ' selected' : '') + '>' + esc(g.name) + '</option>';
+      }).join('') + '</select></div>' +
+      '<div class="field"><label>挂在哪条下面（可选）</label><select id="f-parent"><option value="">（作为根节点）</option>' +
+      same.map(function (x) {
+        return '<option value="' + x.id + '"' + (x.id === pid ? ' selected' : '') + '>' + esc(x.name) + '</option>';
+      }).join('') + '</select></div>' +
+      '<div class="field"><label>挂靠在什么动作上（半被动型用）</label><input type="text" id="f-trigger" value="' +
+      esc(n ? n.trigger || '' : '') + '" placeholder="进家门 / 吃完饭 / 起床"></div>' +
+      '<div class="field"><label>试用期几天（这几天失败不算崩塌）</label><input type="number" id="f-trial" value="3" min="0" max="30"></div>' +
+      '<div class="field"><label>备注</label><input type="text" id="f-note" value="' + esc(n ? n.note || '' : '') + '"></div>' +
+      '<div class="field"><label><input type="checkbox" id="f-root"' + (n && n.isRoot ? ' checked' : '') +
+      '> 标为根国策（保证整个系统还在运转）</label></div>' +
+      '<div class="foot"><button class="btn" data-act="close-modal">取消</button>' +
+      '<button class="btn primary" data-act="save-node:' + (id || '') + ':' + (pid || '') + '">保存</button></div>');
+  }
+
+  function groupForm(id) {
+    var s = App.state;
+    var g = id ? s.policyGroups.find(function (x) { return x.id === id; }) : null;
+    var sc = (g && g.scope) || { mode: 'global', weight: 0.5 };
+    App.modal('<h2>' + (id ? '改组设置' : '新建一组') + '</h2>' +
+      '<div class="field"><label>组名（用大白话）</label><input type="text" id="g-name" value="' + esc(g ? g.name : '') +
+      '" placeholder="作息"></div>' +
+      '<div class="field"><label>副标题（想写世界观名就写这儿）</label><input type="text" id="g-title" value="' +
+      esc(g ? g.title || '' : '') + '" placeholder="司晨殿"></div>' +
+      '<div class="field"><label>出问题时影响谁</label><select id="g-scope">' +
+      '<option value="global"' + (sc.mode === 'global' ? ' selected' : '') + '>不区分（全局提示）</option>' +
+      '<option value="troops"' + (sc.mode === 'troops' ? ' selected' : '') + '>只影响指定的事</option>' +
+      '<option value="none"' + (sc.mode === 'none' ? ' selected' : '') + '>只做记录，不影响任何判断</option>' +
+      '</select></div>' +
+      '<div class="field"><label>权重（0–1）</label><input type="number" id="g-weight" value="' +
+      (sc.weight == null ? 0.5 : sc.weight) + '" step="0.1" min="0" max="1"></div>' +
+      '<div class="field"><label>影响哪些事</label><div class="row tight">' +
+      s.troops.map(function (t) {
+        var on = (sc.troopIds || []).indexOf(t.id) >= 0;
+        return '<label class="tag" style="cursor:pointer"><input type="checkbox" class="g-troop" value="' + t.id + '"' +
+          (on ? ' checked' : '') + '> ' + esc(t.label) + '</label>';
+      }).join('') + '</div></div>' +
+      '<div class="field"><label><input type="checkbox" id="g-nocollapse"' + (g && g.noCollapse ? ' checked' : '') +
+      '> 这一组永不崩坏</label><div class="hint">存放元规则（比如"这个系统本身要运转"）的组应该勾上。</div></div>' +
+      '<div class="foot"><button class="btn" data-act="close-modal">取消</button>' +
+      '<button class="btn primary" data-act="save-group:' + (id || '') + '">保存</button></div>');
+  }
+
+  /* ---------------- 事件 ---------------- */
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest ? e.target.closest('[data-act]') : null;
+    if (!el) return;
+    var act = el.getAttribute('data-act');
+    if (act === 'mask' && !(e.target.classList && e.target.classList.contains('mask'))) return;
+    var parts = act.split(':');
+    var cmd = parts.shift();
+    var fn = ACTS[cmd];
+    if (!fn) return;
+    e.preventDefault();
+    fn.apply(null, parts);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && App.modalOpen()) App.closeModal();
+  });
+
+  /* ---------------- 启动 ---------------- */
+  App.boot = function () {
+    App.storageOk = checkStorage();
+    App.state = App.load();
+    var s = App.state, now = App.now();
+    if (!s.meta.onboarded) {
+      s.meta.onboarded = true;
+      App.save(true);
+      setTimeout(welcome, 300);
+    }
+    var sess = s.runtime && s.runtime.activeSession;
+    if (sess && now - sess.startedAt > (sess.plannedMinutes + 5) * 60000) {
+      var t = R.troopById(s, sess.troopId);
+      App.modal('<h2>上次没结算</h2>' +
+        '<p>「' + esc(t ? t.label : '') + '」计划 ' + sess.plannedMinutes + ' 分钟，已经过去 ' +
+        Math.round((now - sess.startedAt) / 60000) + ' 分钟。</p>' +
+        '<div class="foot"><button class="btn danger" data-act="end-abort-ok">算中断</button>' +
+        '<button class="btn primary" data-act="end-complete">算完成</button></div>');
+    }
+    App.ui.selectedDay = R.todayKey(s, now);
+    App.ui.heatMonth = R.todayKey(s, now).slice(0, 8) + '01';
+    App.ui.rangeRef = R.todayKey(s, now);
+    App.go('start');
+    App.refresh();
+    setInterval(tick, 1000);
+    setInterval(function () { if (!App.modalOpen()) App.refresh(); }, 60000);
+    window.addEventListener('beforeunload', function () { App.save(true); });
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) App.refresh(); });
+  };
+
+  function welcome() {
+    App.modal('<h2>就一件事</h2>' +
+      '<p>这个软件只帮你做一件事：<b>坐下来，开始</b>。</p>' +
+      '<div class="alert info">首页那个大按钮点一下就开始计时，5 分钟也算。' +
+      '做完点「完成」，分钟数就永久记下了——<b>永远不会被打折、被扣除</b>。</div>' +
+      '<p class="muted">国策那几条只是起步建议，随时可以改、删、加。前 30 天你断档了也不会崩坏。' +
+      '如果几天没来，回来会进入「重建期」，目标自动降到最低。</p>' +
+      '<div class="foot"><button class="btn primary" data-act="close-modal">开始</button></div>');
+  }
+
+  root.addEventListener('DOMContentLoaded', App.boot);
+})(window);
+
+</script>
+<script>
+// 只有通过 http(s) 打开时才注册 Service Worker（file:// 下浏览器不允许）。
+// 作用：把应用缓存到本机，之后即使电脑关机 / 断网也能用。
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  navigator.serviceWorker.register('sw.js').catch(function () {});
+}
+</script>
+</body>
+</html>
